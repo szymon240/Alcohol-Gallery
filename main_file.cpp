@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "shaderprogram.h"
 #include "myCube.h"
 #include "myTeapot.h"
+#include <iostream>
 
 float speed_x=0; //angular speed in radians
 float speed_y=0; //angular speed in radians
@@ -137,7 +138,7 @@ void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
 int main(void)
 {
 	GLFWwindow* window; //Pointer to object that represents the application window
-
+	std::cout << "d";
 	glfwSetErrorCallback(error_callback);//Register error processing callback procedure
 
 	if (!glfwInit()) { //Initialize GLFW library
