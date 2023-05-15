@@ -13,8 +13,11 @@
 #include "myCube.h"
 #include "myTeapot.h"
 #include <iostream>
+#include "fast_obj.h"
 
 
+fastObjMesh* mesh;
+ShaderProgram* sp;
 
 //Error processing callback procedure
 void error_callback(int error, const char* description) {
@@ -30,17 +33,37 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glClearColor(0,0,0,1);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetKeyCallback(window,keyCallback);
+	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
+	mesh = fast_obj_read("obj/Cubone/model.obj");
 }
 
 //Release resources allocated by the program
 void freeOpenGLProgram(GLFWwindow* window) {
 	//************Place any code here that needs to be executed once, after the main loop ends************
+	fast_obj_destroy(mesh);
 }
 
 
 void drawScene(GLFWwindow* window) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
+	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Compute projection matrix
+	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Compute view matrix
+
+	sp->use();
+	//Send parameters to graphics card
+	glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
+	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
+
+	glm::mat4 M = glm::mat4(1.0f);
+	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
+
+	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
+	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, mesh->positions); //Specify source of the data for the attribute vertex
+
+	glDrawArrays(GL_TRIANGLES, 0, mesh->position_count); //Draw the object
+
+	glDisableVertexAttribArray(sp->a("vertex")); //Disable sending data to the attribute vertex
 	glfwSwapBuffers(window); //Copy back buffer to front buffer
 }
 
