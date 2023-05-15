@@ -34,7 +34,7 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetKeyCallback(window,keyCallback);
 	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
-	mesh = fast_obj_read("obj/Cubone/model.obj");
+	mesh = fast_obj_read("objects/Cubone/model.obj");
 }
 
 //Release resources allocated by the program
