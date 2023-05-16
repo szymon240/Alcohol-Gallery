@@ -13,10 +13,7 @@
 #include "myCube.h"
 #include "myTeapot.h"
 #include <iostream>
-#include "fast_obj.h"
 
-
-fastObjMesh* mesh;
 ShaderProgram* sp;
 
 //Error processing callback procedure
@@ -34,13 +31,11 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetKeyCallback(window,keyCallback);
 	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
-	mesh = fast_obj_read("objects/Cubone/model.obj");
 }
 
 //Release resources allocated by the program
 void freeOpenGLProgram(GLFWwindow* window) {
 	//************Place any code here that needs to be executed once, after the main loop ends************
-	fast_obj_destroy(mesh);
 }
 
 
@@ -48,7 +43,7 @@ void drawScene(GLFWwindow* window) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Compute projection matrix
-	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Compute view matrix
+	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Compute view matrix
 
 	sp->use();
 	//Send parameters to graphics card
@@ -59,9 +54,9 @@ void drawScene(GLFWwindow* window) {
 	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
 
 	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
-	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, mesh->positions); //Specify source of the data for the attribute vertex
+	glVertexAttribPointer(sp->a("vertex"), 3, GL_FLOAT, false, 0,static_cast<float*>( o.attrib.vertices.data())); //Specify source of the data for the attribute vertex
 
-	glDrawArrays(GL_TRIANGLES, 0, mesh->position_count); //Draw the object
+	glDrawArrays(GL_TRIANGLES, 0, o.attrib.vertices.size()/3);
 
 	glDisableVertexAttribArray(sp->a("vertex")); //Disable sending data to the attribute vertex
 	glfwSwapBuffers(window); //Copy back buffer to front buffer
@@ -78,7 +73,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(1280, 720, "OpenGL", NULL, NULL);  //Rozmiar HD (rozdzielczoœæ)   SPRAWDZIÆ NULLE!   Create a window 500pxx500px titled "OpenGL" and an OpenGL context associated with it.
+	window = glfwCreateWindow(1280*2, 720*2, "OpenGL", NULL, NULL);  //Rozmiar HD (rozdzielczoœæ)   SPRAWDZIÆ NULLE!   Create a window 500pxx500px titled "OpenGL" and an OpenGL context associated with it.
 
 	if (!window) //If no window is opened then close the program
 	{
