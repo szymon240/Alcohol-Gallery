@@ -43,8 +43,11 @@ WorldObject::WorldObject(const char* path) {
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 1]);
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 2]);		
 		printf("%f %f %f %d %d\n", vertices[i], vertices[i+1], vertices[i+2], p.vertex_index, i % 3);
-		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index]);
-		this->normals.push_back(o.attrib.normals[p.normal_index]);
+		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index*2]);
+		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index * 2+1]);
+		this->normals.push_back(o.attrib.normals[p.normal_index*3]);
+		this->normals.push_back(o.attrib.normals[p.normal_index * 3+1]);
+		this->normals.push_back(o.attrib.normals[p.normal_index * 3+2]);
 	}
 	vertCount = vertices.size()/3;
 	M = glm::mat4(1.0f);
