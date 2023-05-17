@@ -6,20 +6,23 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
 #include <vector>
-#define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
 
-struct tinyObj
-{
-	tinyobj::attrib_t                attrib;
-	std::vector<tinyobj::shape_t>    shapes;
-	std::vector<tinyobj::material_t> materials;
-};
+/*struct Model {
+	std::vector<float> vertices;
+	std::vector<float> normals;
+	std::vector<float> texCoords;
+	int vertCount;
+};*/
 
 class WorldObject
 {
 public:
+	//Model model;
 	glm::mat4 M;
-	WorldObject(char* path);
+	WorldObject(const char* path);
+	std::vector<float> vertices;
+	std::vector<float> normals;
+	std::vector<float> texCoords;
+	int vertCount;
 };
 

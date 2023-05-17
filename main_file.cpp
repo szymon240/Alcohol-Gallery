@@ -12,9 +12,14 @@
 #include "shaderprogram.h"
 #include "myCube.h"
 #include "myTeapot.h"
+#include "WorldObject.h"
 #include <iostream>
 
 ShaderProgram* sp;
+WorldObject* ob;
+
+float speed_x = 0; //angular speed in radians
+float speed_y = 0; //angular speed in radians
 
 //Error processing callback procedure
 void error_callback(int error, const char* description) {
@@ -22,6 +27,18 @@ void error_callback(int error, const char* description) {
 }
 
 void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
+	if (action == GLFW_PRESS) {
+		if (key == GLFW_KEY_LEFT) speed_x = -PI / 2;
+		if (key == GLFW_KEY_RIGHT) speed_x = PI / 2;
+		if (key == GLFW_KEY_UP) speed_y = PI / 2;
+		if (key == GLFW_KEY_DOWN) speed_y = -PI / 2;
+	}
+	if (action == GLFW_RELEASE) {
+		if (key == GLFW_KEY_LEFT) speed_x = 0;
+		if (key == GLFW_KEY_RIGHT) speed_x = 0;
+		if (key == GLFW_KEY_UP) speed_y = 0;
+		if (key == GLFW_KEY_DOWN) speed_y = 0;
+	}
 }
 
 
@@ -31,19 +48,21 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetKeyCallback(window,keyCallback);
 	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
+	ob = new WorldObject("objects/Cubone/modell.obj");
 }
 
 //Release resources allocated by the program
 void freeOpenGLProgram(GLFWwindow* window) {
+	delete ob;
 	//************Place any code here that needs to be executed once, after the main loop ends************
 }
 
 
-void drawScene(GLFWwindow* window) {
+void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Compute projection matrix
-	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Compute view matrix
+	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Compute view matrix
 
 	sp->use();
 	//Send parameters to graphics card
@@ -51,12 +70,14 @@ void drawScene(GLFWwindow* window) {
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
 
 	glm::mat4 M = glm::mat4(1.0f);
+	M = glm::rotate(M, angle_y, glm::vec3(1.0f, 0.0f, 0.0f)); //Compute model matrix
+	M = glm::rotate(M, angle_x, glm::vec3(0.0f, 1.0f, 0.0f)); //
 	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
 
 	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
-	glVertexAttribPointer(sp->a("vertex"), 3, GL_FLOAT, false, 0,static_cast<float*>( o.attrib.vertices.data())); //Specify source of the data for the attribute vertex
+	glVertexAttribPointer(sp->a("vertex"), 3, GL_FLOAT, false, 0,static_cast<float*>( ob->vertices.data())); //Specify source of the data for the attribute vertex
 
-	glDrawArrays(GL_TRIANGLES, 0, o.attrib.vertices.size()/3);
+	glDrawArrays(GL_TRIANGLES, 0, ob->vertCount);
 
 	glDisableVertexAttribArray(sp->a("vertex")); //Disable sending data to the attribute vertex
 	glfwSwapBuffers(window); //Copy back buffer to front buffer
@@ -92,12 +113,17 @@ int main(void)
 
 	initOpenGLProgram(window); //Call initialization procedure
 
-
+	float angle_x = 0; //current rotation angle of the object, x axis
+	float angle_y = 0; //current rotation angle of the object, y axis
+	glfwSetTime(0);
 	//Main application loop
 	while (!glfwWindowShouldClose(window)) //As long as the window shouldnt be closed yet...
 	{
-		drawScene(window); //Execute drawing procedure
-		glfwPollEvents(); //Process callback procedures corresponding to the events that took place up to now   SPRAWDZIÆ!!
+		angle_x += speed_x * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
+		angle_y += speed_y * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
+		glfwSetTime(0); //Zero the timer
+		drawScene(window, angle_x, angle_y); //Execute drawing procedure
+		glfwPollEvents();//Process callback procedures corresponding to the events that took place up to now   SPRAWDZIÆ!!
 	}
 	freeOpenGLProgram(window);
 
