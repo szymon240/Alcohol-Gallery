@@ -15,7 +15,7 @@
 #include "WorldObject.h"
 #include <iostream>
 #include "Camera.h"
-#include <glm/gtc/normalize.hpp>
+#include <glm/gtx/normal.hpp>
 
 ShaderProgram* sp;
 WorldObject* ob;
@@ -30,7 +30,7 @@ void error_callback(int error, const char* description) {
 }
 
 void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
-	float cameraSpeed = 0.05f; // Adjust this value to control camera movement speed
+	float cameraSpeed = PI; // Adjust this value to control camera movement speed
 
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_W) // Move forward
@@ -38,9 +38,9 @@ void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
 		if (key == GLFW_KEY_S) // Move backward
 			cam->position -= cam->lookAt * cameraSpeed;
 		if (key == GLFW_KEY_A) // Move left
-			cam->position -= glm::normalize(glm::cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
+			cam->position -= glm::normalize(glm::cross(cam->lookAt, cam->cameraUp)) * cameraSpeed;
 		if (key == GLFW_KEY_D) // Move right
-			cam->position += glm::normalize(glm::cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
+			cam->position += glm::normalize(glm::cross(cam->lookAt, cam->cameraUp)) * cameraSpeed;
 	}
 	if (action == GLFW_RELEASE) {
 		if (key == GLFW_KEY_LEFT) speed_x = 0;
@@ -56,6 +56,7 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glClearColor(0,0,0,1);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetKeyCallback(window,keyCallback);
+	//glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
 	ob = new WorldObject("objects/Cubone/modell.obj");
 	cam = new Camera();
@@ -72,7 +73,7 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Compute projection matrix
-	glm::mat4 V = glm::lookAt(cam->position, cam->lookAt, cam->cameraUp); //Compute view matrix
+	glm::mat4 V = glm::lookAt(cam->position, cam->position + cam->lookAt, cam->cameraUp); //Compute view matrix
 
 	sp->use();
 	//Send parameters to graphics card
