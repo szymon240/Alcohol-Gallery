@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="fast_obj.h" />
     <ClInclude Include="lodepng.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="fast_obj.c" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main_file.cpp" />

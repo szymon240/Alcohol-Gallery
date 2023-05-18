@@ -20,29 +20,20 @@ bool read_tiny_obj(const char* path, tinyObj* o)
 	return LoadObj(&o->attrib, &o->shapes, &o->materials, &warn, &err, path, 0, false);
 }
 
-template<typename T>
-void printVector(const std::vector<T>& vec) {
-	for (const T& value : vec) {
-		std::cout << value << " ";
-	}
-	std::cout << std::endl;
-}
 
 
 WorldObject::WorldObject(const char* path) {
 	tinyObj o;
 	read_tiny_obj(path, &o); //"objects/Cubone/modell.obj"
-	printVector<float>(o.attrib.vertices);
 	//this->vertices.clear();
 	int s = o.shapes[0].mesh.indices.size();
-	std::cout << o.shapes[0].name << std::endl;
 	for (int i = 0; i < s; i++) {
 		tinyobj::index_t p;
 		p = o.shapes[0].mesh.indices[i];
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3]);
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 1]);
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 2]);		
-		printf("%f %f %f %d %d\n", vertices[i], vertices[i+1], vertices[i+2], p.vertex_index, i % 3);
+		//printf("%f %f %f %d %d\n", vertices[i], vertices[i+1], vertices[i+2], p.vertex_index, i % 3);
 		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index*2]);
 		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index * 2+1]);
 		this->normals.push_back(o.attrib.normals[p.normal_index*3]);

@@ -14,9 +14,12 @@
 #include "myTeapot.h"
 #include "WorldObject.h"
 #include <iostream>
+#include "Camera.h"
+#include <glm/gtc/normalize.hpp>
 
 ShaderProgram* sp;
 WorldObject* ob;
+Camera* cam;
 
 float speed_x = 0; //angular speed in radians
 float speed_y = 0; //angular speed in radians
@@ -27,11 +30,17 @@ void error_callback(int error, const char* description) {
 }
 
 void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
+	float cameraSpeed = 0.05f; // Adjust this value to control camera movement speed
+
 	if (action == GLFW_PRESS) {
-		if (key == GLFW_KEY_LEFT) speed_x = -PI / 2;
-		if (key == GLFW_KEY_RIGHT) speed_x = PI / 2;
-		if (key == GLFW_KEY_UP) speed_y = PI / 2;
-		if (key == GLFW_KEY_DOWN) speed_y = -PI / 2;
+		if (key == GLFW_KEY_W) // Move forward
+			cam->position += cam->lookAt * cameraSpeed;
+		if (key == GLFW_KEY_S) // Move backward
+			cam->position -= cam->lookAt * cameraSpeed;
+		if (key == GLFW_KEY_A) // Move left
+			cam->position -= glm::normalize(glm::cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
+		if (key == GLFW_KEY_D) // Move right
+			cam->position += glm::normalize(glm::cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
 	}
 	if (action == GLFW_RELEASE) {
 		if (key == GLFW_KEY_LEFT) speed_x = 0;
@@ -49,6 +58,7 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glfwSetKeyCallback(window,keyCallback);
 	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
 	ob = new WorldObject("objects/Cubone/modell.obj");
+	cam = new Camera();
 }
 
 //Release resources allocated by the program
@@ -62,17 +72,17 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Compute projection matrix
-	glm::mat4 V = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Compute view matrix
+	glm::mat4 V = glm::lookAt(cam->position, cam->lookAt, cam->cameraUp); //Compute view matrix
 
 	sp->use();
 	//Send parameters to graphics card
 	glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
 
-	glm::mat4 M = glm::mat4(1.0f);
-	M = glm::rotate(M, angle_y, glm::vec3(1.0f, 0.0f, 0.0f)); //Compute model matrix
-	M = glm::rotate(M, angle_x, glm::vec3(0.0f, 1.0f, 0.0f)); //
-	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
+	ob->M = glm::mat4(1.0f);
+	ob->M = glm::rotate(ob->M, angle_y, glm::vec3(1.0f, 0.0f, 0.0f)); //Compute model matrix
+	ob->M = glm::rotate(ob->M, angle_x, glm::vec3(0.0f, 1.0f, 0.0f)); //
+	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(ob->M));
 
 	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
 	glVertexAttribPointer(sp->a("vertex"), 3, GL_FLOAT, false, 0,static_cast<float*>( ob->vertices.data())); //Specify source of the data for the attribute vertex
