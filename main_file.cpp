@@ -21,34 +21,45 @@ ShaderProgram* sp;
 WorldObject* ob;
 Camera* cam;
 
+glm::vec3 pos = glm::vec3(0, 1, -5);
+glm::vec3 dir = glm::vec3(0, 0, 1);
+
+
 float speed_x = 0; //angular speed in radians
 float speed_y = 0; //angular speed in radians
-
+float ws = 0;
 //Error processing callback procedure
 void error_callback(int error, const char* description) {
 	fputs(description, stderr);
 }
 
-void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
-	float cameraSpeed = PI; // Adjust this value to control camera movement speed
-
+void keyCallback(
+	GLFWwindow* window,
+	int key,
+	int scancode,
+	int action,
+	int mod
+) {
 	if (action == GLFW_PRESS) {
-		if (key == GLFW_KEY_W) // Move forward
-			cam->position += cam->lookAt * cameraSpeed;
-		if (key == GLFW_KEY_S) // Move backward
-			cam->position -= cam->lookAt * cameraSpeed;
-		if (key == GLFW_KEY_A) // Move left
-			cam->position -= glm::normalize(glm::cross(cam->lookAt, cam->cameraUp)) * cameraSpeed;
-		if (key == GLFW_KEY_D) // Move right
-			cam->position += glm::normalize(glm::cross(cam->lookAt, cam->cameraUp)) * cameraSpeed;
+		if (key == GLFW_KEY_LEFT) speed_y = 1;
+		if (key == GLFW_KEY_RIGHT) speed_y = -1;
+		if (key == GLFW_KEY_PAGE_UP) speed_x = 1;
+		if (key == GLFW_KEY_PAGE_DOWN) speed_x = -1;
+		if (key == GLFW_KEY_UP) ws = 1;
+		if (key == GLFW_KEY_DOWN) ws = -1;
 	}
 	if (action == GLFW_RELEASE) {
-		if (key == GLFW_KEY_LEFT) speed_x = 0;
-		if (key == GLFW_KEY_RIGHT) speed_x = 0;
-		if (key == GLFW_KEY_UP) speed_y = 0;
-		if (key == GLFW_KEY_DOWN) speed_y = 0;
+		if (key == GLFW_KEY_LEFT) speed_y = 0;
+		if (key == GLFW_KEY_RIGHT) speed_y = 0;
+
+		if (key == GLFW_KEY_UP) ws = 0;
+		if (key == GLFW_KEY_DOWN) ws = 0;
+
+		if (key == GLFW_KEY_PAGE_UP) speed_x = 0;
+		if (key == GLFW_KEY_PAGE_DOWN) speed_x = -0;
 	}
 }
+//Pro
 
 
 //Initialization code procedure
@@ -72,8 +83,9 @@ void freeOpenGLProgram(GLFWwindow* window) {
 void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
-	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 1.0f, 50.0f); //Compute projection matrix
-	glm::mat4 V = glm::lookAt(cam->position, cam->position + cam->lookAt, cam->cameraUp); //Compute view matrix
+
+	glm::mat4 V = glm::lookAt(pos, pos + dir, glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
+	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 0.1f, 50.0f); //Wylicz macierz rzutowania
 
 	sp->use();
 	//Send parameters to graphics card
@@ -81,12 +93,12 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
 
 	ob->M = glm::mat4(1.0f);
-	ob->M = glm::rotate(ob->M, angle_y, glm::vec3(1.0f, 0.0f, 0.0f)); //Compute model matrix
-	ob->M = glm::rotate(ob->M, angle_x, glm::vec3(0.0f, 1.0f, 0.0f)); //
+	//ob->M = glm::rotate(ob->M, angle_y, glm::vec3(1.0f, 0.0f, 0.0f)); //Compute model matrix
+	//ob->M = glm::rotate(ob->M, angle_x, glm::vec3(0.0f, 1.0f, 0.0f)); //
 	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(ob->M));
 
 	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
-	glVertexAttribPointer(sp->a("vertex"), 3, GL_FLOAT, false, 0,static_cast<float*>( ob->vertices.data())); //Specify source of the data for the attribute vertex
+	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0,static_cast<float*>(ob->vertices.data())); //Specify source of the data for the attribute vertex
 
 	glDrawArrays(GL_TRIANGLES, 0, ob->vertCount);
 
@@ -105,7 +117,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(1280*2, 720*2, "OpenGL", NULL, NULL);  //Rozmiar HD (rozdzielczoœæ)   SPRAWDZIÆ NULLE!   Create a window 500pxx500px titled "OpenGL" and an OpenGL context associated with it.
+	window = glfwCreateWindow(1920, 720*2, "OpenGL", NULL, NULL);  //Rozmiar HD (rozdzielczoœæ)   SPRAWDZIÆ NULLE!   Create a window 500pxx500px titled "OpenGL" and an OpenGL context associated with it.
 
 	if (!window) //If no window is opened then close the program
 	{
@@ -132,6 +144,16 @@ int main(void)
 	{
 		angle_x += speed_x * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
 		angle_y += speed_y * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
+		
+
+
+		glm::mat4 Mc = glm::rotate(glm::mat4(1.0f), angle_y, glm::vec3(0, 1, 0));
+		Mc = glm::rotate(Mc, angle_x, glm::vec3(1, 0, 0));
+		glm::vec4 dir_ = Mc * glm::vec4(0, 0, 1, 0);
+		dir = glm::vec3(dir_);
+		glm::vec3 mdir = glm::normalize(glm::vec3(dir.x, 0, dir.z));
+
+		pos += ws * (float)glfwGetTime() * mdir;
 		glfwSetTime(0); //Zero the timer
 		drawScene(window, angle_x, angle_y); //Execute drawing procedure
 		glfwPollEvents();//Process callback procedures corresponding to the events that took place up to now   SPRAWDZIÆ!!

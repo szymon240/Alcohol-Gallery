@@ -32,7 +32,8 @@ WorldObject::WorldObject(const char* path) {
 		p = o.shapes[0].mesh.indices[i];
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3]);
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 1]);
-		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 2]);		
+		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 2]);	
+		this->vertices.push_back(1.0f);
 		//printf("%f %f %f %d %d\n", vertices[i], vertices[i+1], vertices[i+2], p.vertex_index, i % 3);
 		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index*2]);
 		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index * 2+1]);
