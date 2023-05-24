@@ -6,8 +6,7 @@ uniform mat4 V;
 uniform mat4 M;
 
 //Attributes
-layout (location=0) in vec4 vertex; //vertex coordinates in model space
-layout (location=1) in vec4 normal; //vertex normal vector in model space
+in vec4 vertex; //Vertex coordinates in model space
 
 
 void main(void) {

@@ -40,6 +40,7 @@ WorldObject::WorldObject(const char* path) {
 		this->normals.push_back(o.attrib.normals[p.normal_index*3]);
 		this->normals.push_back(o.attrib.normals[p.normal_index * 3+1]);
 		this->normals.push_back(o.attrib.normals[p.normal_index * 3+2]);
+		this->normals.push_back(0.0f);
 	}
 	vertCount = vertices.size()/3;
 	M = glm::mat4(1.0f);

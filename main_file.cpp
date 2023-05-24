@@ -99,10 +99,13 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 
 	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
 	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0,static_cast<float*>(ob->vertices.data())); //Specify source of the data for the attribute vertex
+	glEnableVertexAttribArray(sp->a("mormal")); //Enable sending data to the attribute vertex
+	glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0, static_cast<float*>(ob->normals.data())); //Specify source of the data for the attribute vertex
+	glUniform4f(sp->u("color"), 0, 1, 0, 1);
+	glDrawArrays(GL_TRIANGLES, 0,ob->vertCount);
 
-	glDrawArrays(GL_TRIANGLES, 0, ob->vertCount);
-
-	glDisableVertexAttribArray(sp->a("vertex")); //Disable sending data to the attribute vertex
+	glDisableVertexAttribArray(sp->a("vertex"));
+	glDisableVertexAttribArray(sp->a("normal"));//Disable sending data to the attribute vertex
 	glfwSwapBuffers(window); //Copy back buffer to front buffer
 }
 
