@@ -21,12 +21,12 @@ ShaderProgram* sp;
 WorldObject* ob;
 Camera* cam;
 
-glm::vec3 pos = glm::vec3(0, 1, -5);
-glm::vec3 dir = glm::vec3(0, 0, 1);
+//glm::vec3 pos = glm::vec3(0, 1, -5);
+//glm::vec3 dir = glm::vec3(0, 0, 1);
 
 
-float speed_x = 0; //angular speed in radians
-float speed_y = 0; //angular speed in radians
+//float speed_x = 0; //angular speed in radians
+//float speed_y = 0; //angular speed in radians
 float ws = 0;
 //Error processing callback procedure
 void error_callback(int error, const char* description) {
@@ -41,22 +41,22 @@ void keyCallback(
 	int mod
 ) {
 	if (action == GLFW_PRESS) {
-		if (key == GLFW_KEY_LEFT) speed_y = 1;
-		if (key == GLFW_KEY_RIGHT) speed_y = -1;
-		if (key == GLFW_KEY_PAGE_UP) speed_x = 1;
-		if (key == GLFW_KEY_PAGE_DOWN) speed_x = -1;
+		if (key == GLFW_KEY_LEFT) cam->speed_y = 1;
+		if (key == GLFW_KEY_RIGHT) cam->speed_y = -1;
+		if (key == GLFW_KEY_PAGE_UP) cam->speed_x = 1;
+		if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -1;
 		if (key == GLFW_KEY_UP) ws = 1;
 		if (key == GLFW_KEY_DOWN) ws = -1;
 	}
 	if (action == GLFW_RELEASE) {
-		if (key == GLFW_KEY_LEFT) speed_y = 0;
-		if (key == GLFW_KEY_RIGHT) speed_y = 0;
+		if (key == GLFW_KEY_LEFT) cam->speed_y = 0;
+		if (key == GLFW_KEY_RIGHT) cam->speed_y = 0;
 
 		if (key == GLFW_KEY_UP) ws = 0;
 		if (key == GLFW_KEY_DOWN) ws = 0;
 
-		if (key == GLFW_KEY_PAGE_UP) speed_x = 0;
-		if (key == GLFW_KEY_PAGE_DOWN) speed_x = -0;
+		if (key == GLFW_KEY_PAGE_UP) cam->speed_x = 0;
+		if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -0;
 	}
 }
 //Pro
@@ -84,7 +84,7 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
 
-	glm::mat4 V = glm::lookAt(pos, pos + dir, glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
+	glm::mat4 V = glm::lookAt(cam->position, cam->position + cam->dir, glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 0.1f, 50.0f); //Wylicz macierz rzutowania
 
 	sp->use();
@@ -139,26 +139,18 @@ int main(void)
 
 	initOpenGLProgram(window); //Call initialization procedure
 
-	float angle_x = 0; //current rotation angle of the object, x axis
-	float angle_y = 0; //current rotation angle of the object, y axis
+	//float angle_x = 0; //current rotation angle of the object, x axis
+	//float angle_y = 0; //current rotation angle of the object, y axis
 	glfwSetTime(0);
 	//Main application loop
 	while (!glfwWindowShouldClose(window)) //As long as the window shouldnt be closed yet...
 	{
-		angle_x += speed_x * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
-		angle_y += speed_y * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
-		
+		cam->angle_x += cam->speed_x * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
+		cam->angle_y += cam->speed_y * glfwGetTime(); //Add angle by which the object was rotated in the previous iteration
 
-
-		glm::mat4 Mc = glm::rotate(glm::mat4(1.0f), angle_y, glm::vec3(0, 1, 0));
-		Mc = glm::rotate(Mc, angle_x, glm::vec3(1, 0, 0));
-		glm::vec4 dir_ = Mc * glm::vec4(0, 0, 1, 0);
-		dir = glm::vec3(dir_);
-		glm::vec3 mdir = glm::normalize(glm::vec3(dir.x, 0, dir.z));
-
-		pos += ws * (float)glfwGetTime() * mdir;
+		cam->position += ws * (float)glfwGetTime() * cam->update();
 		glfwSetTime(0); //Zero the timer
-		drawScene(window, angle_x, angle_y); //Execute drawing procedure
+		drawScene(window, cam->angle_x, cam->angle_y); //Execute drawing procedure
 		glfwPollEvents();//Process callback procedures corresponding to the events that took place up to now   SPRAWDZIÆ!!
 	}
 	freeOpenGLProgram(window);
