@@ -46,3 +46,20 @@ WorldObject::WorldObject(const char* path) {
 	M = glm::mat4(1.0f);
 
 }
+
+void WorldObject::draw(ShaderProgram* sp) {
+	sp->use();
+
+	M = glm::mat4(1.0f);
+	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
+
+	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
+	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, static_cast<float*>(vertices.data())); //Specify source of the data for the attribute vertex
+	glEnableVertexAttribArray(sp->a("mormal")); //Enable sending data to the attribute vertex
+	glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0, static_cast<float*>(normals.data())); //Specify source of the data for the attribute vertex
+	glUniform4f(sp->u("color"), 0, 1, 0, 1);
+	glDrawArrays(GL_TRIANGLES, 0, vertCount);
+
+	glDisableVertexAttribArray(sp->a("vertex"));
+	glDisableVertexAttribArray(sp->a("normal"));//Disable sending data to the attribute vertex
+}
