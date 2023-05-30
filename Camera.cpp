@@ -29,3 +29,41 @@ glm::vec3 Camera::update() {
 
 	return mdir;
 }
+
+Player::Player()
+{
+	cam = new Camera();
+	drunkLevel = 0;
+	pos = glm::vec3(0.0f, 0.0f, -5.0f);
+	ws = 0;
+	goSpeed = 1;
+	turnSpeed = 1;
+}
+
+void Player::left()
+{
+	cam->speed_y = turnSpeed;
+}
+
+void Player::turnStop()
+{
+	cam->speed_y = 0;
+}
+
+
+void Player::right()
+{
+	
+	cam->speed_y = -1*turnSpeed;
+	
+
+}
+
+void Player::update(double time)
+{
+	cam->angle_x += cam->speed_x * time; //Add angle by which the object was rotated in the previous iteration
+	cam->angle_y += cam->speed_y * time; //Add angle by which the object was rotated in the previous iteration
+
+	cam->position += ws * (float)time * cam->update();
+}
+
