@@ -52,11 +52,8 @@ void Player::turnStop()
 
 
 void Player::right()
-{
-	
+{	
 	cam->speed_y = -1*turnSpeed;
-	
-
 }
 
 void Player::update(double time)
