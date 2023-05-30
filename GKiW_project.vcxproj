@@ -21,9 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="constants.h" />
-    <ClInclude Include="fast_obj.h" />
     <ClInclude Include="lodepng.h" />
-    <ClInclude Include="obj_loader.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="shaderprogram.h" />
     <ClInclude Include="myCube.h" />
     <ClInclude Include="myTeapot.h" />
@@ -32,10 +31,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="fast_obj.c" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main_file.cpp" />
-    <ClCompile Include="obj_loader.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
     <ClCompile Include="WorldObject.cpp" />
   </ItemGroup>

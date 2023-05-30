@@ -15,10 +15,11 @@
 #include "WorldObject.h"
 #include <iostream>
 #include "Camera.h"
+#include "Scene.h"
 #include <glm/gtx/normal.hpp>
 
 ShaderProgram* sp;
-WorldObject* ob;
+Scene * scene;
 Camera* cam;
 
 //glm::vec3 pos = glm::vec3(0, 1, -5);
@@ -69,13 +70,14 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glfwSetKeyCallback(window,keyCallback);
 	//glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
-	ob = new WorldObject("objects/Cubone/modell.obj");
+	scene = new Scene("alley");
+	scene->loadLevel();
 	cam = new Camera();
 }
 
 //Release resources allocated by the program
 void freeOpenGLProgram(GLFWwindow* window) {
-	delete ob;
+	scene->clean();
 	//************Place any code here that needs to be executed once, after the main loop ends************
 }
 
@@ -90,7 +92,7 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 	glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
 
-	ob->draw(sp);
+	scene->draw(sp);
 
 	glfwSwapBuffers(window); //Copy back buffer to front buffer
 }
