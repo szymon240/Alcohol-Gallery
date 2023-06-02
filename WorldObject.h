@@ -29,13 +29,16 @@ public:
 	glm::mat4 M;
 	WorldObject(const char* path, const char* texPath);
 	WorldObject(const char* path, glm::vec3 startingPos, const char* texPath);
+	~WorldObject() {
+		glDeleteTextures(1, &tex);
+	}
 	void move(glm::vec3 where);
 	
 	std::vector<float> vertices;
 	std::vector<float> normals;
 	std::vector<float> texCoords;
 	int vertCount;
-	void draw(ShaderProgram* sp);
+	void draw(ShaderProgram* sp, int i);
 	GLuint tex;
 };
 

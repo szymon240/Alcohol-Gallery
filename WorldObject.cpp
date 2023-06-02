@@ -1,8 +1,9 @@
 #include "WorldObject.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
-
+#include "myCube.h"
 #include<iostream>
+#include <cmath>
 
 struct tinyObj
 {
@@ -33,8 +34,8 @@ void WorldObject::loadModel(const char* path) {
 		this->vertices.push_back(o.attrib.vertices[p.vertex_index * 3 + 2]);
 		this->vertices.push_back(1.0f);
 		//printf("%f %f %f %d %d\n", vertices[i], vertices[i+1], vertices[i+2], p.vertex_index, i % 3);
-		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index * 2]);
-		this->texCoords.push_back(o.attrib.texcoords[p.texcoord_index * 2 + 1]);
+		this->texCoords.push_back(std::abs(o.attrib.texcoords[p.texcoord_index * 2]));
+		this->texCoords.push_back(std::abs(o.attrib.texcoords[p.texcoord_index * 2 + 1]));
 		this->normals.push_back(o.attrib.normals[p.normal_index * 3]);
 		this->normals.push_back(o.attrib.normals[p.normal_index * 3 + 1]);
 		this->normals.push_back(o.attrib.normals[p.normal_index * 3 + 2]);
@@ -46,7 +47,7 @@ void WorldObject::loadModel(const char* path) {
 WorldObject::WorldObject(const char* path, const char* texPath) {
 	loadModel(path);
 	M = glm::mat4(1.0f);
-	//tex = readTexture(texPath);
+	tex = readTexture(texPath);
 }
 
 
@@ -54,7 +55,7 @@ WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* te
 	loadModel(path);
 	M = glm::mat4(1.0f);
 	M = glm::translate(M, startingPos);
-	//tex = readTexture(texPath);
+	tex = readTexture(texPath);
 }
 
 void WorldObject::move(glm::vec3 where)
@@ -62,31 +63,33 @@ void WorldObject::move(glm::vec3 where)
 	M = glm::translate(M, where);
 }
 
-void WorldObject::draw(ShaderProgram* sp) {
+void WorldObject::draw(ShaderProgram* sp,int i) {
 	sp->use();
-
 	
 	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(this->M));
 
-	glEnableVertexAttribArray(sp->a("vertex")); //Enable sending data to the attribute vertex
-	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, static_cast<float*>(vertices.data())); //Specify source of the data for the attribute vertex
-	glEnableVertexAttribArray(sp->a("mormal")); //Enable sending data to the attribute vertex
-	glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0, static_cast<float*>(normals.data())); //Specify source of the data for the attribute vertex
-	//glUniform4f(sp->u("color"), 0, 1, 0, 1);
-	
-	glEnableVertexAttribArray(sp->a("texCoord0"));  //W³¹cz przesy³anie danych do atrybutu texCoord
-	glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, false, 0, static_cast<float*>(texCoords.data())); //Wska¿ tablicê z danymi dla atrybutu texCoord
+	glEnableVertexAttribArray(sp->a("vertex")); // Enable sending data to the attribute vertex
+	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, static_cast<float*>(vertices.data())); // Specify source of the data for the attribute vertex
 
-	glUniform1i(sp->u("tex"), 0);
+	glEnableVertexAttribArray(sp->a("normal")); // Enable sending data to the attribute normal
+	glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0,static_cast<float*>(normals.data())); // Specify source of the data for the attribute normal
+
+	//glUniform4f(sp->u("color"), 0, 1, 0, 1);
+
+	glEnableVertexAttribArray(sp->a("texCoord0"));  // Enable sending data to the attribute texCoord
+	glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, false, 0,static_cast<float*>(texCoords.data())); // Specify source of the data for the attribute texCoord
+
+	glUniform1i(sp->u("tex"),i);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 
-	glDrawArrays(GL_TRIANGLES, 0, vertCount);
+	glDrawArrays(GL_TRIANGLES, 0,vertCount);
 
 	glDisableVertexAttribArray(sp->a("vertex"));
-	glDisableVertexAttribArray(sp->a("normal"));//Disable sending data to the attribute vertex
+	glDisableVertexAttribArray(sp->a("normal"));
 	glDisableVertexAttribArray(sp->a("texCoord0"));
 }
+
 
 GLuint WorldObject::readTexture(const char* filename) {
 	GLuint tex;
@@ -97,7 +100,7 @@ GLuint WorldObject::readTexture(const char* filename) {
 	unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
 	//Wczytaj obrazek
 	unsigned error = lodepng::decode(image, width, height, filename);
-
+	printf("%u %u  %u", error,width,height);
 	//Import do pamiêci karty graficznej
 	glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
 	glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt

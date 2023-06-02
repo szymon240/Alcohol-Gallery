@@ -11,8 +11,8 @@
 #include "constants.h"
 #include "lodepng.h"
 #include "shaderprogram.h"
-#include "myCube.h"
-#include "myTeapot.h"
+//#include "myCube.h"
+
 #include "WorldObject.h"
 #include <iostream>
 #include "Camera.h"
