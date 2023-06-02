@@ -19,10 +19,14 @@
 
 class WorldObject
 {
+	void loadModel(const char* path);
 public:
 	//Model model;
 	glm::mat4 M;
 	WorldObject(const char* path);
+	WorldObject(const char* path, glm::vec3 startingPos);
+	void move(glm::vec3 where);
+	
 	std::vector<float> vertices;
 	std::vector<float> normals;
 	std::vector<float> texCoords;
