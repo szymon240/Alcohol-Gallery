@@ -5,10 +5,25 @@ uniform mat4 P;
 uniform mat4 V;
 uniform mat4 M;
 
-//Attributes
-in vec4 vertex; //Vertex coordinates in model space
 
+uniform vec4 lightDir=vec4(0,0,5,0);
+
+//Attributes
+in vec4 vertex; //vertex coordinates in model space
+in vec4 normal; //vertex normal vector in model space
+in vec2 texCoord0; //texturing coordinates
+
+
+//varying variables
+out vec2 i_tc;
+out float i_nl;
 
 void main(void) {
     gl_Position=P*V*M*vertex;
+
+    mat4 G=mat4(inverse(transpose(mat3(M))));
+    vec4 n=normalize(V*G*normal);
+
+    i_nl=clamp(dot(n,lightDir),0,1);
+    i_tc=texCoord0;
 }

@@ -1,7 +1,16 @@
 #version 330
 
 
-out vec4 pixelColor; //Output variable. Almost final pixel color.
+uniform sampler2D tex;
+
+out vec4 pixelColor; //Output variable of the fragment shader. (Almost) final pixel color.
+
+//Varying variables
+in float i_nl;
+in vec2 i_tc;
+
 void main(void) {
-	pixelColor=vec4(1,1,1,1);
+    vec4 color=texture(tex,i_tc);
+	pixelColor=vec4(color.rgb*i_nl,color.a);
 }
+

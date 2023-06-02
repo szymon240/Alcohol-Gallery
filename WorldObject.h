@@ -9,6 +9,8 @@
 #include <vector>
 #include "constants.h"
 #include "shaderprogram.h"
+#include "lodepng.h"
+
 
 /*struct Model {
 	std::vector<float> vertices;
@@ -20,17 +22,20 @@
 class WorldObject
 {
 	void loadModel(const char* path);
+	GLuint readTexture(const char* filename);
+
 public:
 	//Model model;
 	glm::mat4 M;
-	WorldObject(const char* path);
-	WorldObject(const char* path, glm::vec3 startingPos);
+	WorldObject(const char* path, const char* texPath);
+	WorldObject(const char* path, glm::vec3 startingPos, const char* texPath);
 	void move(glm::vec3 where);
 	
 	std::vector<float> vertices;
 	std::vector<float> normals;
 	std::vector<float> texCoords;
 	int vertCount;
-	virtual void draw(ShaderProgram* sp);
+	void draw(ShaderProgram* sp);
+	GLuint tex;
 };
 

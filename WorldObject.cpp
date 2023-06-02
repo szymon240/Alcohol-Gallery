@@ -43,16 +43,18 @@ void WorldObject::loadModel(const char* path) {
 	vertCount = vertices.size() / 3;
 }
 
-WorldObject::WorldObject(const char* path) {
+WorldObject::WorldObject(const char* path, const char* texPath) {
 	loadModel(path);
 	M = glm::mat4(1.0f);
+	//tex = readTexture(texPath);
 }
 
 
-WorldObject::WorldObject(const char* path, glm::vec3 startingPos) {
+WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* texPath) {
 	loadModel(path);
 	M = glm::mat4(1.0f);
 	M = glm::translate(M, startingPos);
+	//tex = readTexture(texPath);
 }
 
 void WorldObject::move(glm::vec3 where)
@@ -70,9 +72,41 @@ void WorldObject::draw(ShaderProgram* sp) {
 	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, static_cast<float*>(vertices.data())); //Specify source of the data for the attribute vertex
 	glEnableVertexAttribArray(sp->a("mormal")); //Enable sending data to the attribute vertex
 	glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0, static_cast<float*>(normals.data())); //Specify source of the data for the attribute vertex
-	glUniform4f(sp->u("color"), 0, 1, 0, 1);
+	//glUniform4f(sp->u("color"), 0, 1, 0, 1);
+	
+	glEnableVertexAttribArray(sp->a("texCoord0"));  //W³¹cz przesy³anie danych do atrybutu texCoord
+	glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, false, 0, static_cast<float*>(texCoords.data())); //Wska¿ tablicê z danymi dla atrybutu texCoord
+
+	glUniform1i(sp->u("tex"), 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex);
+
 	glDrawArrays(GL_TRIANGLES, 0, vertCount);
 
 	glDisableVertexAttribArray(sp->a("vertex"));
 	glDisableVertexAttribArray(sp->a("normal"));//Disable sending data to the attribute vertex
+	glDisableVertexAttribArray(sp->a("texCoord0"));
+}
+
+GLuint WorldObject::readTexture(const char* filename) {
+	GLuint tex;
+	glActiveTexture(GL_TEXTURE0);
+
+	//Wczytanie do pamiêci komputera
+	std::vector<unsigned char> image;   //Alokuj wektor do wczytania obrazka
+	unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
+	//Wczytaj obrazek
+	unsigned error = lodepng::decode(image, width, height, filename);
+
+	//Import do pamiêci karty graficznej
+	glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
+	glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt
+	//Wczytaj obrazek do pamiêci KG skojarzonej z uchwytem
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*)image.data());
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	return tex;
 }

@@ -19,13 +19,13 @@ void Scene::addObject(WorldObject * ob)
 
 void Scene::loadLevel()
 {
-	WorldObject * ob = new WorldObject("objects/Cubone/modell.obj");
+	WorldObject * ob = new WorldObject("objects/Cubone/modell.obj", "sky.png");
 	objects.push_back(ob);
 
-	WorldObject* ob1 = new WorldObject("objects/Cubone/modell.obj", glm::vec3(3.0f, 0.0f, 1.0f));
-	objects.push_back(ob1);
-	WorldObject* ob2 = new WorldObject("objects/Cubone/modell.obj", glm::vec3(-3.0f, 0.0f, 1.0f));
-	objects.push_back(ob2);
+	//WorldObject* ob1 = new WorldObject("objects/Cubone/modell.obj", glm::vec3(3.0f, 0.0f, 1.0f), "sky.png");
+	//objects.push_back(ob1);
+	//WorldObject* ob2 = new WorldObject("objects/Cubone/modell.obj", glm::vec3(-3.0f, 0.0f, 1.0f), "sky.png");
+	//objects.push_back(ob2);
 }
 
 void Scene::clean()
