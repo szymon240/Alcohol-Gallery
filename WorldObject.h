@@ -22,6 +22,7 @@
 class WorldObject
 {
 	void loadModel(const char* path);
+	void checkAttributes();
 	GLuint readTexture(const char* filename);
 
 public:

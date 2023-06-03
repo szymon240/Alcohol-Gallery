@@ -41,13 +41,28 @@ void WorldObject::loadModel(const char* path) {
 		this->normals.push_back(o.attrib.normals[p.normal_index * 3 + 2]);
 		this->normals.push_back(0.0f);
 	}
-	vertCount = vertices.size() / 3;
+	vertCount = vertices.size() / 4;
+}
+
+void WorldObject::checkAttributes() {
+	std::cout << "Wierzcholki\n";
+	for (const auto& number : this->vertices) {
+		std::cout << number << " ";
+	}
+	std::cout << "textura: " << this->tex <<"\n";
+	
 }
 
 WorldObject::WorldObject(const char* path, const char* texPath) {
 	loadModel(path);
 	M = glm::mat4(1.0f);
 	tex = readTexture(texPath);
+	std::cout <<"verts: " << vertCount << "\n";
+	std::cout << "verts size: " << vertices.size() /4<< "\n";
+	std::cout << "verts normals: " << normals.size()/4 << "\n";
+	std::cout << "verts tex coords: " << texCoords.size()/2 << "\n";
+	//this->checkAttributes();
+	
 }
 
 
@@ -56,6 +71,11 @@ WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* te
 	M = glm::mat4(1.0f);
 	M = glm::translate(M, startingPos);
 	tex = readTexture(texPath);
+	std::cout << "verts: " << vertCount << "\n";
+	std::cout << "verts size: " << vertices.size() / 4 << "\n";
+	std::cout << "verts normals: " << normals.size() /4<< "\n";
+	std::cout << "verts tex coords: " << texCoords.size() /2<< "\n";
+	//this->checkAttributes();
 }
 
 void WorldObject::move(glm::vec3 where)
@@ -63,27 +83,26 @@ void WorldObject::move(glm::vec3 where)
 	M = glm::translate(M, where);
 }
 
-void WorldObject::draw(ShaderProgram* sp,int i) {
+void WorldObject::draw(ShaderProgram* sp, int i) {
 	sp->use();
-	
-	glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(this->M));
 
-	glEnableVertexAttribArray(sp->a("vertex")); // Enable sending data to the attribute vertex
-	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, static_cast<float*>(vertices.data())); // Specify source of the data for the attribute vertex
+	glUniformMatrix4fv(sp->u("M"), 1, GL_FALSE, glm::value_ptr(this->M));
 
-	glEnableVertexAttribArray(sp->a("normal")); // Enable sending data to the attribute normal
-	glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0,static_cast<float*>(normals.data())); // Specify source of the data for the attribute normal
+	glEnableVertexAttribArray(sp->a("vertex"));
+	glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, GL_FALSE, 0, static_cast<const void*>(vertices.data()));
 
-	//glUniform4f(sp->u("color"), 0, 1, 0, 1);
+	glEnableVertexAttribArray(sp->a("normal"));
+	glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, GL_FALSE, 0, static_cast<const void*>(normals.data()));
 
-	glEnableVertexAttribArray(sp->a("texCoord0"));  // Enable sending data to the attribute texCoord
-	glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, false, 0,static_cast<float*>(texCoords.data())); // Specify source of the data for the attribute texCoord
+	glEnableVertexAttribArray(sp->a("texCoord0"));
+	glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, GL_FALSE, 0, static_cast<const void*>(texCoords.data()));
 
-	glUniform1i(sp->u("tex"),i);
+	glUniform1i(sp->u("textureMap0"), 0); // Set the texture unit index to 0
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 
-	glDrawArrays(GL_TRIANGLES, 0,vertCount);
+	glDrawArrays(GL_TRIANGLES, 0, vertCount);
 
 	glDisableVertexAttribArray(sp->a("vertex"));
 	glDisableVertexAttribArray(sp->a("normal"));
@@ -100,6 +119,7 @@ GLuint WorldObject::readTexture(const char* filename) {
 	unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
 	//Wczytaj obrazek
 	unsigned error = lodepng::decode(image, width, height, filename);
+	printf("%s", lodepng_error_text(error));
 	printf("%u %u  %u", error,width,height);
 	//Import do pamiêci karty graficznej
 	glGenTextures(1, &tex); //Zainicjuj jeden uchwyt

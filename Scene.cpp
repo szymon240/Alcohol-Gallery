@@ -7,8 +7,21 @@ Scene::Scene(std::string name)
 
 void Scene::draw(ShaderProgram *sp) {
 	int i = 0;
-	for (const auto& object : objects) {
-		object->draw(sp, i);
+	for (const auto& object : objects){
+		if (object->vertices.size() != 0 || object->vertices.size()%3 != 0) {
+			if (object != nullptr) {
+				object->draw(sp, i);
+			}
+			else {
+
+				printf("OBJEKT JEST PUSTY?");
+			}
+		}
+		else
+		{
+			printf("No vertices loaded!!");
+		}
+		
 	}
 }
 
