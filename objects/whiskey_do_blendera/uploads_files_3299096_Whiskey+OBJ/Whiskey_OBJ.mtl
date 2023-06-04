@@ -1,0 +1,22 @@
+newmtl PB_glass
+d 0.995
+Kd 0.82745099 0.81176472 0.65882355
+
+newmtl Front
+d 1
+Kd 0.75294119 0.75294119 0.75294119
+map_Kd "C:/Users/Public/Documents/My DAZ 3D Library/Runtime/textures/PAMAWO/Prohibition/Bottles/PB_label_10.png"
+
+newmtl Reverse
+d 0
+Kd 0.75294119 0.75294119 0.75294119
+
+newmtl PB_liquid
+d 0.995
+Kd 0.67058825 0.43921569 0.28235295
+
+newmtl PB_cork_03
+d 1
+Kd 0.80000001 0.56470591 0.43921569
+map_Kd "C:/Users/Public/Documents/My DAZ 3D Library/Runtime/textures/PAMAWO/Prohibition/Bottles/PB_cork03.jpg"
+
