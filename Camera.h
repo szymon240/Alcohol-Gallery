@@ -34,6 +34,9 @@ public:
 	void left();
 	void turnStop();
 	void right();
+	void forward();
+	void back();
+	void moveStop();
 	void update(double time);
 
 };

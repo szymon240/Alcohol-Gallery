@@ -1,0 +1,13 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl 14042_750_mL_Wine_Bottle
+Ns 50.000012
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd C:Users\\Szymon\\Downloads\\750_mL_Wine_Bottle_v2_L3.123c083fb066-743a-4e3f-aa77-8735a8f556aa\\750_mL_Wine_Bottle_v2_L3.123c083fb066-743a-4e3f-aa77-8735a8f556aa\\14042_750 mL_Wine_Bottle_d.jpg

@@ -36,8 +36,8 @@ Player::Player()
 	drunkLevel = 0;
 	pos = glm::vec3(0.0f, 0.0f, -5.0f);
 	ws = 0;
-	goSpeed = 1;
-	turnSpeed = 1;
+	goSpeed = 5;
+	turnSpeed = 2;
 }
 
 void Player::left()
@@ -55,6 +55,22 @@ void Player::right()
 {	
 	cam->speed_y = -1*turnSpeed;
 }
+
+void Player::forward()
+{
+	this->ws = 1 * this->goSpeed;
+}
+
+void Player::back()
+{
+	this->ws = -1 * this->goSpeed;
+}
+
+void Player::moveStop()
+{
+	this->ws = 0;
+}
+
 
 void Player::update(double time)
 {

@@ -47,15 +47,14 @@ void keyCallback(
 		if (key == GLFW_KEY_RIGHT) player->right();
 		//if (key == GLFW_KEY_PAGE_UP) cam->speed_x = 1;
 		//if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -1;
-		if (key == GLFW_KEY_UP) player->ws = 1;
-		if (key == GLFW_KEY_DOWN) player->ws = -1;
+		if (key == GLFW_KEY_UP) player->forward();
+		if (key == GLFW_KEY_DOWN) player->back();
 	}
 	if (action == GLFW_RELEASE) {
 		
 		if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_LEFT)player->turnStop();
 
-		if (key == GLFW_KEY_UP) player->ws = 0;
-		if (key == GLFW_KEY_DOWN) player->ws = 0;
+		if (key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) player->moveStop();
 
 		//if (key == GLFW_KEY_PAGE_UP) cam->speed_x = 0;
 		//if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -0;

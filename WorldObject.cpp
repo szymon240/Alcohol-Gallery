@@ -49,41 +49,68 @@ void WorldObject::checkAttributes() {
 	for (const auto& number : this->vertices) {
 		std::cout << number << " ";
 	}
+	std::cout << "Textcoords: \n";
+	bool t = false;
+	for (const auto& number : this->texCoords) {
+		std::cout << number << " ";
+		if (t) { std::cout << "\n"; t = false; }
+		else t = true;
+	}
 	std::cout << "textura: " << this->tex <<"\n";
+	std::cout << "verts: " << vertCount << "\n";
+	std::cout << "verts size: " << vertices.size() / 4 << "\n";
+	std::cout << "verts normals: " << normals.size() / 4 << "\n";
+	std::cout << "verts tex coords: " << texCoords.size() / 2 << "\n";
 	
 }
 
 WorldObject::WorldObject(const char* path, const char* texPath) {
 	loadModel(path);
+	position = glm::vec3(0.0f, 0.0f, 0.0f);
 	M = glm::mat4(1.0f);
 	tex = readTexture(texPath);
-	std::cout <<"verts: " << vertCount << "\n";
-	std::cout << "verts size: " << vertices.size() /4<< "\n";
-	std::cout << "verts normals: " << normals.size()/4 << "\n";
-	std::cout << "verts tex coords: " << texCoords.size()/2 << "\n";
 	//this->checkAttributes();
-	
+	type = 0;
 }
 
 
 WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* texPath) {
 	loadModel(path);
 	M = glm::mat4(1.0f);
-	M = glm::translate(M, startingPos);
+	position = glm::vec3(0.0f, 0.0f, 0.0f);
+	//M = glm::translate(M, startingPos);
+	this->move(startingPos);
 	tex = readTexture(texPath);
-	std::cout << "verts: " << vertCount << "\n";
-	std::cout << "verts size: " << vertices.size() / 4 << "\n";
-	std::cout << "verts normals: " << normals.size() /4<< "\n";
-	std::cout << "verts tex coords: " << texCoords.size() /2<< "\n";
+	type = 0;
+	//this->checkAttributes();
+}
+
+WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* texPath, int type) {
+	loadModel(path);
+	M = glm::mat4(1.0f);
+	position = glm::vec3(0.0f, 0.0f, 0.0f);
+	//M = glm::translate(M, startingPos);
+	this->move(startingPos);
+	tex = readTexture(texPath);
+	this->type = type;
+	if (type == FLOOR) {
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
 	//this->checkAttributes();
 }
 
 void WorldObject::move(glm::vec3 where)
 {
 	M = glm::translate(M, where);
+	position += where;
 }
 
-void WorldObject::draw(ShaderProgram* sp, int i) {
+std::string WorldObject::getPositionInfo() {
+	std::string pos = "x:" + std::to_string( position[0]) +" y:" + std::to_string(position[1]) + " z:"+std::to_string(position[2])+ "\n";
+	return pos;
+}
+
+void WorldObject::draw(ShaderProgram* sp) {
 	sp->use();
 
 	glUniformMatrix4fv(sp->u("M"), 1, GL_FALSE, glm::value_ptr(this->M));
@@ -102,12 +129,26 @@ void WorldObject::draw(ShaderProgram* sp, int i) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 
-	glDrawArrays(GL_TRIANGLES, 0, vertCount);
+	switch (type){
+	case OBJECT:
+		glDrawArrays(GL_TRIANGLES, 0, vertCount);
+		break;
+	case FLOOR:
+		glTexParameteri(GL_TEXTURE_2D,
+			GL_TEXTURE_WRAP_S,
+			GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D,
+			GL_TEXTURE_WRAP_T,
+			GL_REPEAT);
 
+		//draw floor
+		glDrawArrays(GL_TRIANGLES,vertCount, 16);
+	}
 	glDisableVertexAttribArray(sp->a("vertex"));
 	glDisableVertexAttribArray(sp->a("normal"));
 	glDisableVertexAttribArray(sp->a("texCoord0"));
 }
+
 
 
 GLuint WorldObject::readTexture(const char* filename) {
