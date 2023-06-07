@@ -44,7 +44,7 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> pedestal1 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-3.0f, -1.0f, -5.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal1));
 
-	std::unique_ptr<WorldObject> ob2 = std::make_unique<WorldObject>("objects/wine/wine.obj", glm::vec3(-3.0f, 3.0f,-2.0f), "objects/wine/metal.png");
+	std::unique_ptr<WorldObject> ob2 = std::make_unique<WorldObject>("objects/wine/wine.obj", glm::vec3(-3.0f, 3.0f,-2.0f), "objects/metal.png");
 	objects.push_back(std::move(ob2));
 	
 	std::unique_ptr<WorldObject> pedestal2 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-3.0f, -1.0f, -2.0f), "objects/pedestal/marmur2.png");
@@ -71,12 +71,19 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> floorPtr = std::make_unique<WorldObject>("objects/plane.obj", glm::vec3(0.0f, -1.0f, 0.0f), "objects/wood.png");
 	objects.push_back(std::move(floorPtr));
 
-	std::unique_ptr<WorldObject> wall = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(-5.0f, 1.0f, 0.0f), "objects/wood.png");
+	std::unique_ptr<WorldObject> wall = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(-5.0f, 1.0f, 0.0f), "objects/wall.png");
 	objects.push_back(std::move(wall));
 
-	std::unique_ptr<WorldObject> wall2 = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(5.0f, 1.0f, 0.0f), "objects/wood.png");
+	std::unique_ptr<WorldObject> wall2 = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(5.0f, 1.0f, 0.0f), "objects/wall.png");
 	wall2->M = glm::rotate(wall2->M,PI,glm::vec3(0.0,1.0,0.0));
 	objects.push_back(std::move(wall2));
+
+	std::unique_ptr<WorldObject> wall3 = std::make_unique<WorldObject>("objects/wall2.obj", glm::vec3(0.0f, 1.0f, 20.0f), "objects/wall.png");
+	objects.push_back(std::move(wall3));
+
+	std::unique_ptr<WorldObject> wall4 = std::make_unique<WorldObject>("objects/wall2.obj", glm::vec3(0.0f, 1.0f, -20.0f), "objects/wall.png");
+	wall4->M = glm::rotate(wall4->M, PI, glm::vec3(0.0, 1.0, 0.0));
+	objects.push_back(std::move(wall4));
 
 
 	this->printPositions();

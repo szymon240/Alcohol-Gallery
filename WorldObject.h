@@ -47,6 +47,7 @@ public:
 	
 	//methods
 	void move(glm::vec3 where);
+	void setPosition(glm::vec3 where);
 	void draw(ShaderProgram* sp);
 	std::string getPositionInfo();	
 };
