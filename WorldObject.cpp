@@ -133,22 +133,26 @@ void WorldObject::draw(ShaderProgram* sp) {
 	glBindTexture(GL_TEXTURE_2D, tex);
 
 	switch (type){
-	case OBJECT:
+	case FLAT:
 		glUniform1i(sp->u("type"), 0);
-		glDrawArrays(GL_TRIANGLES, 0, vertCount);
+		break;
+	case SHINE:
+		glUniform1i(sp->u("type"), 1);
 		break;
 	case FLOOR:
 
-		glUniform1i(sp->u("type"), 1);
+		glUniform1i(sp->u("type"), 2);
 		glUniform1i(sp->u("textureMap1"), 1); // Set the texture unit index to 0
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texNormal);
 
-		glDrawArrays(GL_TRIANGLES, 0, vertCount);
 		
 		break;
 	}
+
+	glDrawArrays(GL_TRIANGLES, 0, vertCount);
+
 	glDisableVertexAttribArray(sp->a("vertex"));
 	glDisableVertexAttribArray(sp->a("normal"));
 	glDisableVertexAttribArray(sp->a("texCoord0"));
