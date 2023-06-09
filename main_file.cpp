@@ -49,6 +49,7 @@ void keyCallback(
 		//if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -1;
 		if (key == GLFW_KEY_UP) player->forward();
 		if (key == GLFW_KEY_DOWN) player->back();
+		if (key == GLFW_KEY_SPACE) scene->printObjectID(player);
 	}
 	if (action == GLFW_RELEASE) {
 		

@@ -160,8 +160,8 @@ GLuint WorldObject::readTexture(const char* filename) {
 	unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
 	//Wczytaj obrazek
 	unsigned error = lodepng::decode(image, width, height, filename);
-	printf("%s", lodepng_error_text(error));
-	printf("%u %u  %u", error,width,height);
+	//printf("%s", lodepng_error_text(error));
+	//printf("%u %u  %u", error,width,height);
 	//Import do pamiêci karty graficznej
 	glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
 	glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt

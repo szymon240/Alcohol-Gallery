@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera() {
-	this->position = glm::vec3(0.0f, 1.0f, -5.0f);
+	this->position = glm::vec3(0.0f, 4.0f, -5.0f);
 	this->dir = glm::vec3(0.0f, 0.0f, 1.0f);
 	this->cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	speed_x = 0;

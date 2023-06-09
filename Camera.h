@@ -25,6 +25,9 @@ class Player
 	float turnSpeed;
 	float goSpeed;
 public:
+	glm::vec3 getPosition() const {
+		return cam->position;
+	}
 	Player();
 	Camera * cam;
 	int drunkLevel;
