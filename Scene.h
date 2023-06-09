@@ -21,5 +21,6 @@ public:
 	void loadLevel();
 	void clean();
 	void printObjectID(Player* player);
+	void moveBottle(int i, Player* player);
 	};
 
