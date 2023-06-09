@@ -120,7 +120,7 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> pedestal5 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, -3.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal5));
 
-	std::unique_ptr<WorldObject> floorPtr = std::make_unique<WorldObject>("objects/plane.obj", glm::vec3(0.0f, -1.0f, 0.0f), "objects/wood.png");
+	std::unique_ptr<WorldObject> floorPtr = std::make_unique<WorldObject>("objects/plane.obj", glm::vec3(0.0f, -1.0f, 0.0f), "objects/wood.png", FLOOR);
 	objects.push_back(std::move(floorPtr));
 
 	std::unique_ptr<WorldObject> wall = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(-8.0f, 1.0f, 0.0f), "objects/wall.png");

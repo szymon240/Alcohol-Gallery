@@ -41,6 +41,7 @@ public:
 	glm::mat4 M;
 	glm::vec3 position;
 	GLuint tex;
+	GLuint texNormal;
 	int type;
 	//model data
 	std::vector<float> vertices;

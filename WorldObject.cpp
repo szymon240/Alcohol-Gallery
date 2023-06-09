@@ -94,7 +94,10 @@ WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* te
 	tex = readTexture(texPath);
 	this->type = type;
 	if (type == FLOOR) {
-		glGenerateMipmap(GL_TEXTURE_2D);
+		texNormal = readTexture("objects/Wood_spec2.png");
+	}
+	else {
+		texNormal = NULL;
 	}
 	//this->checkAttributes();
 }
@@ -111,7 +114,7 @@ std::string WorldObject::getPositionInfo() {
 }
 
 void WorldObject::draw(ShaderProgram* sp) {
-	sp->use();
+	
 
 	glUniformMatrix4fv(sp->u("M"), 1, GL_FALSE, glm::value_ptr(this->M));
 
@@ -131,18 +134,20 @@ void WorldObject::draw(ShaderProgram* sp) {
 
 	switch (type){
 	case OBJECT:
+		glUniform1i(sp->u("type"), 0);
 		glDrawArrays(GL_TRIANGLES, 0, vertCount);
 		break;
 	case FLOOR:
-		glTexParameteri(GL_TEXTURE_2D,
-			GL_TEXTURE_WRAP_S,
-			GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D,
-			GL_TEXTURE_WRAP_T,
-			GL_REPEAT);
 
-		//draw floor
-		glDrawArrays(GL_TRIANGLES,vertCount, 16);
+		glUniform1i(sp->u("type"), 1);
+		glUniform1i(sp->u("textureMap1"), 1); // Set the texture unit index to 0
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texNormal);
+
+		glDrawArrays(GL_TRIANGLES, 0, vertCount);
+		
+		break;
 	}
 	glDisableVertexAttribArray(sp->a("vertex"));
 	glDisableVertexAttribArray(sp->a("normal"));
