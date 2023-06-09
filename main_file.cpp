@@ -69,7 +69,7 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetKeyCallback(window,keyCallback);
 	//glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
-	sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
+	sp = new ShaderProgram("v_shader.glsl", NULL, "f_shader.glsl");
 	scene = new Scene("alley");
 	scene->loadLevel();
 	player = new Player();
@@ -86,14 +86,24 @@ void freeOpenGLProgram(GLFWwindow* window) {
 
 
 void drawScene(GLFWwindow* window) {
+	sp->use();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
 
 	glm::mat4 V = glm::lookAt(player->cam->position, player->cam->position + player->cam->dir, glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 0.1f, 50.0f); //Wylicz macierz rzutowania
 
+	// Set up lights
+	const int nr_lights = 2; // Number of lights
+	glm::vec4 pointLights[nr_lights];
+	pointLights[0] = glm::vec4(0.0f, 0.0f, -16.0f,1.0f); // First light position
+	pointLights[1] = glm::vec4(0.0f, 0.0f, 16.0f,1.0f);  // Second light position
+	
+
 	//Send parameters to graphics card
 	glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
+	glUniform3fv(sp->u("pointLights"), nr_lights, glm::value_ptr(pointLights[0]));
+	glUniform1i(sp->u(" active_nr_lights"), nr_lights);
 
 	scene->draw(sp);
 

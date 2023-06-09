@@ -111,7 +111,7 @@ std::string WorldObject::getPositionInfo() {
 }
 
 void WorldObject::draw(ShaderProgram* sp) {
-	sp->use();
+	
 
 	glUniformMatrix4fv(sp->u("M"), 1, GL_FALSE, glm::value_ptr(this->M));
 

@@ -38,7 +38,9 @@
     <ClCompile Include="WorldObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="f_shader.glsl" />
     <None Include="f_simplest.glsl" />
+    <None Include="v_shader.glsl" />
     <None Include="v_simplest.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
