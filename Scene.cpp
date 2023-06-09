@@ -34,12 +34,22 @@ void Scene::printObjectID(Player* player) {
 }
 
 void Scene::moveBottle(int i, Player* player) {
-	objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, glm::vec3(player->getPosition())*glm::vec3(1.0f, 1.0f, 0.0f));
+	if (i < 6) {
+		objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, glm::vec3(0.0f, 0.0f, 1.0f));
+	}
+	else {
+		objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, glm::vec3(0.0f, 0.0f, -1.0f));
+	}
 
 	// Start a new thread to reverse the rotation after a delay
 	std::thread reverseThread([this, i, player]() {
 		std::this_thread::sleep_for(std::chrono::seconds(1));  // Delay for 5 seconds
-		objects[i]->M = glm::rotate(objects[i]->M, PI / 4, glm::vec3(player->getPosition())*glm::vec3(1.0f, 1.0f, 0.0f));  // Reverse the rotation
+		if (i < 6) {
+			objects[i]->M = glm::rotate(objects[i]->M, PI / 4, glm::vec3(0.0f, 0.0f, 1.0f));
+		}
+		else {
+			objects[i]->M = glm::rotate(objects[i]->M, PI / 4, glm::vec3(0.0f, 0.0f, -1.0f));
+		}  // Reverse the rotation
 		});
 
 	reverseThread.detach();

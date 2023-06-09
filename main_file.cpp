@@ -43,12 +43,12 @@ void keyCallback(
 	int mod
 ) {
 	if (action == GLFW_PRESS) {
-		if (key == GLFW_KEY_LEFT) player->left();
-		if (key == GLFW_KEY_RIGHT) player->right();
+		if (key == GLFW_KEY_LEFT) player->left(player);
+		if (key == GLFW_KEY_RIGHT) player->right(player);
 		//if (key == GLFW_KEY_PAGE_UP) cam->speed_x = 1;
 		//if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -1;
-		if (key == GLFW_KEY_UP) player->forward();
-		if (key == GLFW_KEY_DOWN) player->back();
+		if (key == GLFW_KEY_UP) player->forward(player);
+		if (key == GLFW_KEY_DOWN) player->back(player);
 		if (key == GLFW_KEY_SPACE) scene->printObjectID(player);
 	}
 	if (action == GLFW_RELEASE) {

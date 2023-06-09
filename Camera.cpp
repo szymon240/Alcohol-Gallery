@@ -40,9 +40,15 @@ Player::Player()
 	turnSpeed = 2;
 }
 
-void Player::left()
+void Player::left(Player* player)
 {
-	cam->speed_y = turnSpeed;
+	int random = rand() % 150;
+	if (player->drunkLevel <= random) {
+		cam->speed_y = turnSpeed;
+	} else {
+			cam->speed_y = -1*turnSpeed;
+	}
+	//upAndDown(player, true);
 }
 
 void Player::turnStop()
@@ -51,19 +57,40 @@ void Player::turnStop()
 }
 
 
-void Player::right()
+void Player::right(Player* player)
 {	
-	cam->speed_y = -1*turnSpeed;
+	int random = rand() % 150;
+	if (player->drunkLevel <= random) {
+		cam->speed_y = -1*turnSpeed;
+	}
+	else {
+			cam->speed_y = turnSpeed;
+	}
+	//upAndDown(player, true);
 }
 
-void Player::forward()
+void Player::forward(Player* player)
 {
-	this->ws = 1 * this->goSpeed;
+	int random = rand() % 150;
+	if (player->drunkLevel <= random) {
+		this->ws = 1 * this->goSpeed;
+	}
+	else {
+		this->ws = -1 * this->goSpeed;
+	}
+	//upAndDown(player, true);
 }
 
-void Player::back()
+void Player::back(Player* player)
 {
-	this->ws = -1 * this->goSpeed;
+	int random = rand() % 150;
+	if (player->drunkLevel <= random) {
+		this->ws = -1 * this->goSpeed;
+	}
+	else {
+		this->ws = 1 * this->goSpeed;
+	}
+	//upAndDown(player, true);
 }
 
 void Player::moveStop()
@@ -71,6 +98,31 @@ void Player::moveStop()
 	this->ws = 0;
 }
 
+void Player::upAndDown(Player* player, bool isMoving) {
+	int i = 0;
+	int random = rand() % 150;
+	if (player->drunkLevel <= random) {
+		cam->angle_x = 0;
+		cam->speed_x = 0;
+	}
+	else {
+		if (isMoving) {
+			i += 1;
+			cam->speed_x = 0.1;
+			if (i >= 10)
+				isMoving = false;
+		}
+		else {
+			i -= 1;
+			cam->speed_x = -0.1;
+			if (i <= 0) {
+				isMoving = true;
+				return;
+			}
+		}
+
+	}
+}
 
 void Player::update(double time)
 {

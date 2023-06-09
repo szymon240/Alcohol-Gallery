@@ -34,12 +34,13 @@ public:
 	glm::vec3 pos;
 	int ws;
 
-	void left();
+	void left(Player* player);
 	void turnStop();
-	void right();
-	void forward();
-	void back();
+	void right(Player* player);
+	void forward(Player* player);
+	void back(Player* player);
 	void moveStop();
+	void upAndDown(Player* player, bool isMoving);
 	void update(double time);
 
 };
