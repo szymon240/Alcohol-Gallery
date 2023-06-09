@@ -4,7 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <map>
-
+#include "Camera.h"
 
 class Scene
 {
@@ -20,6 +20,6 @@ public:
 	void addObject(std::unique_ptr<WorldObject> ob);
 	void loadLevel();
 	void clean();
-	
-};
+	void printObjectID(Player* player);
+	};
 

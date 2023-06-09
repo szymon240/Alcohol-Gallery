@@ -25,6 +25,7 @@ class WorldObject
 	void checkAttributes();
 	GLuint readTexture(const char* filename);
 
+
 public:
 	//Model model;
 	//constructors
@@ -35,6 +36,8 @@ public:
 		glDeleteTextures(1, &tex);
 	}
 	
+	std::string id;
+	int drunkenness;
 	glm::mat4 M;
 	glm::vec3 position;
 	GLuint tex;
@@ -46,6 +49,10 @@ public:
 	int vertCount;
 	
 	//methods
+	glm::vec3 getPosition() const {
+		return position;
+	}
+
 	void move(glm::vec3 where);
 	void setPosition(glm::vec3 where);
 	void draw(ShaderProgram* sp);
