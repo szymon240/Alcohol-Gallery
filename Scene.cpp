@@ -18,18 +18,20 @@ void Scene::printObjectID(Player* player) {
 	float minDist = std::numeric_limits<float>::max();
 	std::string closestID;
 	int drunkenness;
-	for (size_t i = 0; i < objects.size(); i++) {
+	int index;
+	for (int i = 0; i < objects.size(); i++) {
 		float dist = glm::length(objects[i]->getPosition() - player->getPosition());
 		if (dist < minDist) {
 			minDist = dist;
 			closestID = objects[i]->id;
 			drunkenness = objects[i]->drunkenness;
-			moveBottle(i, player);
+			index = i;
 		}
 	}
 	if (!closestID.empty()) {
 		player->drunkLevel = player->drunkLevel + drunkenness;
 		std::cout << player->drunkLevel << std::endl;
+		moveBottle(index, player);
 	}
 }
 
