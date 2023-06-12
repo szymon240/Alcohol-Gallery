@@ -113,6 +113,7 @@ void drawScene(GLFWwindow* window) {
 
 int main(void)
 {
+	srand(time(NULL));
 	GLFWwindow* window; //Pointer to object that represents the application window
 
 	glfwSetErrorCallback(error_callback);//Register error processing callback procedure

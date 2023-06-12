@@ -39,6 +39,9 @@ Player::Player()
 	goSpeed = 5;
 	turnSpeed = 2;
 	isDrinking = false;
+	wobbly = false;
+	wobblyTicks = 0;
+	wobbleHorizontal = 0.05;
 }
 
 void Player::left(Player* player)
@@ -100,29 +103,24 @@ void Player::moveStop()
 	this->ws = 0;
 }
 
-void Player::upAndDown(Player* player, bool isMoving) {
-	int i = 0;
-	int random = rand() % 150;
-	if (player->drunkLevel <= random) {
-		cam->angle_x = 0;
-		cam->speed_x = 0;
-	}
-	else {
-		if (isMoving) {
-			i += 1;
-			cam->speed_x = 0.1;
-			if (i >= 10)
-				isMoving = false;
-		}
-		else {
-			i -= 1;
-			cam->speed_x = -0.1;
-			if (i <= 0) {
-				isMoving = true;
-				return;
-			}
-		}
 
+void Player::wobble() {
+	int random = rand() % 150;
+	if (drunkLevel >= 90 && !wobbly) {
+		wobblyTicks = 300;
+		wobbly = true;
+	}
+	if (wobblyTicks > 150) {
+		cam->speed_x = 0.03;
+		if (drunkLevel > 100) cam->speed_y += wobbleHorizontal;
+		
+		wobblyTicks--;
+	}
+	else if (wobblyTicks > 0) {
+		cam->speed_x = -0.03;
+		wobblyTicks--;
+		if(drunkLevel > 100)cam->speed_y -= wobbleHorizontal;
+		if (wobblyTicks == 0) { wobbly = false; wobbleHorizontal *-1; }
 	}
 }
 
@@ -138,10 +136,10 @@ void Player::update(double time)
 		cam->position = newPosition;
 	}
 	
+	wobble();
 	
-	cam->angle_x += cam->speed_x * time; //Add angle by which the object was rotated in the previous iteration
-	cam->angle_y += cam->speed_y * time; //Add angle by which the object was rotated in the previous iteration
-
-	
+	cam->angle_x += cam->speed_x * time; 
+	cam->angle_y += cam->speed_y * time;
+		
 }
 

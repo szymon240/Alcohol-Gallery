@@ -34,6 +34,9 @@ public:
 	glm::vec3 pos;
 	int ws;
 	bool isDrinking;
+	bool wobbly;
+	int wobblyTicks;
+	int wobbleHorizontal;
 
 	void left(Player* player);
 	void turnStop();
@@ -43,4 +46,5 @@ public:
 	void moveStop();
 	void upAndDown(Player* player, bool isMoving);
 	void update(double time);
+	void wobble();
 };
