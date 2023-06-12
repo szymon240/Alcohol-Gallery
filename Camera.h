@@ -33,6 +33,7 @@ public:
 	int drunkLevel;
 	glm::vec3 pos;
 	int ws;
+	bool isDrinking;
 
 	void left(Player* player);
 	void turnStop();
@@ -42,5 +43,4 @@ public:
 	void moveStop();
 	void upAndDown(Player* player, bool isMoving);
 	void update(double time);
-
 };

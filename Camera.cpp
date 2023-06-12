@@ -38,6 +38,7 @@ Player::Player()
 	ws = 0;
 	goSpeed = 5;
 	turnSpeed = 2;
+	isDrinking = false;
 }
 
 void Player::left(Player* player)

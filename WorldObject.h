@@ -11,7 +11,8 @@
 #include "shaderprogram.h"
 #include "lodepng.h"
 
-enum objectType {FLAT ,SHINE, FLOOR};
+enum lightingType {FLAT ,SHINE, FLOOR};
+enum objectType {BOTTLE};
 /*struct Model {
 	std::vector<float> vertices;
 	std::vector<float> normals;
