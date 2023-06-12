@@ -39,22 +39,14 @@ void Scene::moveBottle(int i, Player* player) {
 	if (player->isDrinking == true) return;
 	player->isDrinking = true;
 	glm::vec3 rotateVector =glm::normalize(glm::cross(objects[i]->position - player->pos , glm::vec3(0.0f,1.0f,0.0f))); //cross product for calculating perpendicular vector
-	if (i < 6) {
-		objects[i]->M = glm::rotate(objects[i]->M, PI / 4, rotateVector);
-	}
-	else {
-		objects[i]->M = glm::rotate(objects[i]->M, PI / 4, rotateVector);
-	}
-
+	
+	objects[i]->M = glm::rotate(objects[i]->M, PI / 4, rotateVector);
+	
 	// Start a new thread to reverse the rotation after a delay
 	std::thread reverseThread([this, i, player,rotateVector]() {
 		std::this_thread::sleep_for(std::chrono::seconds(1));  // Delay for 5 seconds
-		if (i < 6) {
-			objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, rotateVector);
-		}
-		else {
-			objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, rotateVector);
-		}  
+		objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, rotateVector);
+		
 		player->isDrinking = false;
 		});
 
@@ -77,7 +69,7 @@ void Scene::addObject(std::unique_ptr<WorldObject> ob) {
 
 
 void Scene::loadLevel() {
-	
+	//BUTELKI I PIEDESTA£Y
 	std::unique_ptr<WorldObject> ob = std::make_unique<WorldObject>("objects/potion/potion.obj", glm::vec3(-5.5f, 3.5f, 2.0f), "objects/potion/potion2.png");
 	ob->id = "Potionek prawy";
 	ob->drunkenness = 5;
@@ -126,24 +118,37 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> pedestal5 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, -3.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal5));
 
+	//SUFIT I POD£OGA
 	std::unique_ptr<WorldObject> floorPtr = std::make_unique<WorldObject>("objects/plane.obj", glm::vec3(0.0f, -1.0f, 0.0f), "objects/wood.png", FLOOR);
 	objects.push_back(std::move(floorPtr));
+	std::unique_ptr<WorldObject> celling = std::make_unique<WorldObject>("objects/plane.obj", glm::vec3(0.0f, 19.0f, 0.0f), "objects/wall.png", FLOOR);
+	celling->M = glm::rotate(celling->M, PI, glm::vec3(1.0, 0.0, 0.0));
+	objects.push_back(std::move(celling));
 
+	//SCIANY
 	std::unique_ptr<WorldObject> wall = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(-8.0f, 1.0f, 0.0f), "objects/wall.png");
 	objects.push_back(std::move(wall));
-
 	std::unique_ptr<WorldObject> wall2 = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(8.0f, 1.0f, 0.0f), "objects/wall.png");
 	wall2->M = glm::rotate(wall2->M,PI,glm::vec3(0.0,1.0,0.0));
 	objects.push_back(std::move(wall2));
-
-	std::unique_ptr<WorldObject> wall3 = std::make_unique<WorldObject>("objects/wall2.obj", glm::vec3(0.0f, 1.0f, 30.0f), "objects/wall.png");
+	std::unique_ptr<WorldObject> wall3 = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(0.0f, 1.0f, 30.0f), "objects/wall.png");
+	wall3->M = glm::rotate(wall3->M, PI/2, glm::vec3(0.0, 1.0, 0.0));
 	objects.push_back(std::move(wall3));
-
-	std::unique_ptr<WorldObject> wall4 = std::make_unique<WorldObject>("objects/wall2.obj", glm::vec3(0.0f, 1.0f, -20.0f), "objects/wall.png");
-	wall4->M = glm::rotate(wall4->M, PI, glm::vec3(0.0, 1.0, 0.0));
+	std::unique_ptr<WorldObject> wall4 = std::make_unique<WorldObject>("objects/wall.obj", glm::vec3(0.0f, 1.0f, -20.0f), "objects/wall.png");
+	wall4->M = glm::rotate(wall4->M, -PI/2, glm::vec3(0.0, 1.0, 0.0));
 	objects.push_back(std::move(wall4));
+	
+	//LAMPY
+	std::unique_ptr<WorldObject> lamp = std::make_unique<WorldObject>("objects/lamp.obj", glm::vec3(0.0f, 15.0f, 20.0f), "objects/lampa.png");
+	objects.push_back(std::move(lamp));
+	std::unique_ptr<WorldObject> lamp2 = std::make_unique<WorldObject>("objects/lamp.obj", glm::vec3(0.0f, 15.0f, -10.0f), "objects/lampa.png");
+	objects.push_back(std::move(lamp2));
 
 
+	//DRZWI!
+	std::unique_ptr<WorldObject> doors = std::make_unique<WorldObject>("objects/craftsmanDoorClosed.obj", glm::vec3(0.0f, 2.0f, 30.0f), "objects/metal.png");
+	doors->M = glm::scale(doors->M, glm::vec3(1.5f, 3.0f, 1.5f));
+	objects.push_back(std::move(doors));
 	this->printPositions();
 }
 void Scene::clean()

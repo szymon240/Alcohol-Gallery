@@ -82,7 +82,6 @@ void freeOpenGLProgram(GLFWwindow* window) {
 	delete player;
 	delete scene;
 	delete sp;
-	//************Place any code here that needs to be executed once, after the main loop ends************
 }
 
 
@@ -105,7 +104,7 @@ void drawScene(GLFWwindow* window) {
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
 	glUniform3fv(sp->u("pointLights"), nr_lights, glm::value_ptr(pointLights[0]));
 	glUniform1i(sp->u(" active_nr_lights"), nr_lights);
-
+	glUniform4fv(sp->u("viewerPosition"), 1, glm::value_ptr(glm::vec4(player->pos, 1.0f)));
 	scene->draw(sp);
 
 	glfwSwapBuffers(window); //Copy back buffer to front buffer

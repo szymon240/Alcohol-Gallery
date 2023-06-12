@@ -94,7 +94,7 @@ WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* te
 	tex = readTexture(texPath);
 	this->type = type;
 	if (type == FLOOR) {
-		texNormal = readTexture("objects/Wood_spec2.png");
+		texNormal = readTexture("objects/Wood_spec.png");
 	}
 	else {
 		texNormal = NULL;

@@ -4,6 +4,7 @@
 uniform mat4 P;
 uniform mat4 V;
 uniform mat4 M;
+uniform vec4 viewerPosition;
 
 //Attributes
 in vec4 vertex; //Vertex coordinates in model space
@@ -20,11 +21,11 @@ out vec2 iTexCoord0;
 
 
 void main(void) {
-    vec4 lp = vec4(0, 1, -10, 1); //light position, world space
+    vec4 lp = vec4(0, 13, -10, 1); //light position, world space
     l1 = normalize(V * lp - V * M * vertex); //vector towards the light in eye space
-    vec4 lp2 = vec4(0,1,10,1);
+    vec4 lp2 = vec4(0,13,20,1);
     l2 = normalize(V*lp2-V*M*vertex);
-    v = normalize(vec4(0, 1, 6, 1) - V * M * vertex); //vector towards the viewer in eye space
+    v = normalize(viewerPosition - V * M * vertex); //vector towards the viewer in eye space
     n = normalize(V * M * normal); //normal vector in eye space
 
     iTexCoord0 = texCoord0;
