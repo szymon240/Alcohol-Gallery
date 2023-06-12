@@ -40,20 +40,20 @@ void Scene::moveBottle(int i, Player* player) {
 	player->isDrinking = true;
 	glm::vec3 rotateVector =glm::normalize(glm::cross(objects[i]->position - player->pos , glm::vec3(0.0f,1.0f,0.0f))); //cross product for calculating perpendicular vector
 	if (i < 6) {
-		objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, glm::vec3(0.0f, 0.0f, 1.0f));
+		objects[i]->M = glm::rotate(objects[i]->M, PI / 4, rotateVector);
 	}
 	else {
-		objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, glm::vec3(0.0f, 0.0f, -1.0f));
+		objects[i]->M = glm::rotate(objects[i]->M, PI / 4, rotateVector);
 	}
 
 	// Start a new thread to reverse the rotation after a delay
 	std::thread reverseThread([this, i, player,rotateVector]() {
 		std::this_thread::sleep_for(std::chrono::seconds(1));  // Delay for 5 seconds
 		if (i < 6) {
-			objects[i]->M = glm::rotate(objects[i]->M, PI / 4, glm::vec3(0.0f, 0.0f, 1.0f));
+			objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, rotateVector);
 		}
 		else {
-			objects[i]->M = glm::rotate(objects[i]->M, PI / 4, glm::vec3(0.0f, 0.0f, -1.0f));
+			objects[i]->M = glm::rotate(objects[i]->M, -PI / 4, rotateVector);
 		}  
 		player->isDrinking = false;
 		});

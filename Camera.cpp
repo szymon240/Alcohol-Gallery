@@ -83,7 +83,8 @@ void Player::forward(Player* player)
 }
 
 void Player::back(Player* player)
-{
+{	
+	
 	int random = rand() % 150;
 	if (player->drunkLevel <= random) {
 		this->ws = -1 * this->goSpeed;
@@ -126,10 +127,21 @@ void Player::upAndDown(Player* player, bool isMoving) {
 }
 
 void Player::update(double time)
-{
+{	
+	glm::vec3 newPosition = cam->position + ws * (float)time * cam->update();
+
+	// Check if the new position is within the allowed boundaries
+	if (newPosition.x > -7.9f && newPosition.x < 7.9f &&
+		newPosition.z > -19.9f && newPosition.z < 29.9f)
+	{
+		pos = newPosition;
+		cam->position = newPosition;
+	}
+	
+	
 	cam->angle_x += cam->speed_x * time; //Add angle by which the object was rotated in the previous iteration
 	cam->angle_y += cam->speed_y * time; //Add angle by which the object was rotated in the previous iteration
 
-	cam->position += ws * (float)time * cam->update();
+	
 }
 
