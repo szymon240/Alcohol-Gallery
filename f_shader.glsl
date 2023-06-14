@@ -16,11 +16,12 @@ uniform vec4 ambientLightColor = vec4(0.2, 0.2, 0.2, 0.2);
 
 float calculateDiff(vec4 l, vec4 reflect) {
     float nl = max(dot(reflect, l), 0.0);
+    nl = nl*(1/length(l)) *0.5;
     return nl;
 }
 
 float calculateSpec(vec4 vertex, vec4 reflect,float p) {
-    float rv = pow(max(dot(reflect, vertex), 0.0), p);
+    float rv = pow(max(dot(reflect, vertex), 0.0), 50.0);
     return rv;
 }
 

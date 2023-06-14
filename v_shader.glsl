@@ -21,7 +21,7 @@ out vec2 iTexCoord0;
 
 
 void main(void) {
-    vec4 lp = vec4(0, 13, -10, 1); //light position, world space
+    vec4 lp = vec4(1, 13, -10, 1); //light position, world space
     l1 = normalize(V * lp - V * M * vertex); //vector towards the light in eye space
     vec4 lp2 = vec4(0,13,20,1);
     l2 = normalize(V*lp2-V*M*vertex);
