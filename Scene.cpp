@@ -124,6 +124,20 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> pedestal7 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 9.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal7));
 
+
+	//DEKORACJE
+	std::unique_ptr<WorldObject> dec = std::make_unique<WorldObject>("objects/decorations/decoration1.obj", glm::vec3(7.0f, -1.0f, 29.0f), "objects/pedestal/marmur2.png");
+	objects.push_back(std::move(dec));
+
+	std::unique_ptr<WorldObject> dec1 = std::make_unique<WorldObject>("objects/decorations/decoration1.obj", glm::vec3(-7.0f, -1.0f, -19.0f), "objects/pedestal/marmur2.png");
+	objects.push_back(std::move(dec1));
+
+	std::unique_ptr<WorldObject> dec2 = std::make_unique<WorldObject>("objects/decorations/decoration2.obj", glm::vec3(-7.0f, -1.0f, 29.0f), "objects/pedestal/marmur2.png");
+	objects.push_back(std::move(dec2));
+
+	std::unique_ptr<WorldObject> dec3 = std::make_unique<WorldObject>("objects/decorations/decoration2.obj", glm::vec3(7.0f, -1.0f, -19.0f), "objects/pedestal/marmur2.png");
+	objects.push_back(std::move(dec3));
+
 	//SUFIT I POD£OGA
 	std::unique_ptr<WorldObject> floorPtr = std::make_unique<WorldObject>("objects/plane.obj", glm::vec3(0.0f, -1.0f, 0.0f), "objects/wood.png", FLOOR);
 	objects.push_back(std::move(floorPtr));
