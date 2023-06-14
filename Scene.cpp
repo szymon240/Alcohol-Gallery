@@ -98,7 +98,7 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> pedestal2 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, -3.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal2));
 
-	std::unique_ptr<WorldObject> ob3 = std::make_unique<WorldObject>("objects/wierd_bottle/wierd2.obj", glm::vec3(5.5f, 3.5f, 2.0f), "objects/wierd_bottle/membrane.png");
+	std::unique_ptr<WorldObject> ob3 = std::make_unique<WorldObject>("objects/wierd_bottle/wierd2.obj", glm::vec3(5.5f, 3.5f, 3.0f), "objects/wierd_bottle/membrane.png");
 	ob3->id = "Potionek lewy";
 	ob3->M = glm::scale(ob3->M, glm::vec3(0.9f, 1.6f, 0.9f));
 	ob3->drunkenness = 5;
@@ -110,7 +110,7 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> pedestal3 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 3.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal3));
 
-	std::unique_ptr<WorldObject> ob4 = std::make_unique<WorldObject>("objects/can/can.obj", glm::vec3(5.5f, 3.0f, -7.0f), "objects/can/tex.png");
+	std::unique_ptr<WorldObject> ob4 = std::make_unique<WorldObject>("objects/can/can.obj", glm::vec3(5.5f, 3.0f, -9.0f), "objects/can/tex.png");
 	ob4->id = "PIWO";
 	ob4->M = glm::scale(ob4->M, glm::vec3(0.7f, 0.7f, 0.7f));
 	ob4->drunkenness = 1;
@@ -133,16 +133,16 @@ void Scene::loadLevel() {
 
 
 	//DEKORACJE
-	std::unique_ptr<WorldObject> dec = std::make_unique<WorldObject>("objects/decorations/decoration1.obj", glm::vec3(7.0f, -1.0f, 29.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> dec = std::make_unique<WorldObject>("objects/decorations/decoration1.obj", glm::vec3(7.0f, -1.0f, 29.0f), "objects/decorations/marble.png");
 	objects.push_back(std::move(dec));
 
-	std::unique_ptr<WorldObject> dec1 = std::make_unique<WorldObject>("objects/decorations/decoration1.obj", glm::vec3(-7.0f, -1.0f, -19.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> dec1 = std::make_unique<WorldObject>("objects/decorations/decoration1.obj", glm::vec3(-7.0f, -1.0f, -19.0f), "objects/decorations/marble.png");
 	objects.push_back(std::move(dec1));
 
-	std::unique_ptr<WorldObject> dec2 = std::make_unique<WorldObject>("objects/decorations/decoration2.obj", glm::vec3(-7.0f, -1.0f, 29.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> dec2 = std::make_unique<WorldObject>("objects/decorations/decoration2.obj", glm::vec3(-7.0f, -1.0f, 29.0f), "objects/decorations/marble.png");
 	objects.push_back(std::move(dec2));
 
-	std::unique_ptr<WorldObject> dec3 = std::make_unique<WorldObject>("objects/decorations/decoration2.obj", glm::vec3(7.0f, -1.0f, -19.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> dec3 = std::make_unique<WorldObject>("objects/decorations/decoration2.obj", glm::vec3(7.0f, -1.0f, -19.0f), "objects/decorations/marble.png");
 	objects.push_back(std::move(dec3));
 
 	//SUFIT I POD£OGA
