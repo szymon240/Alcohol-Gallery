@@ -107,6 +107,13 @@ void Scene::loadLevel() {
 	std::unique_ptr<WorldObject> pedestal6 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, 15.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal6));
 
+	std::unique_ptr<WorldObject> ob6 = std::make_unique<WorldObject>("objects/whiskey/bombai.obj", glm::vec3(5.5f, 3.2f, 15.0f), "objects/whiskey/tex.png");
+	ob6->id = "bOMBAI";
+	//ob6->M = glm::scale(ob6->M, glm::vec3(0.7f, 0.7f, 0.7f));
+	ob6->drunkenness = 3;
+	objects.push_back(std::move(ob6));
+
+
 	std::unique_ptr<WorldObject> pedestal3 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 8.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal3));
 
@@ -127,6 +134,12 @@ void Scene::loadLevel() {
 
 	std::unique_ptr<WorldObject> pedestal5 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 1.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal5));
+	
+	std::unique_ptr<WorldObject> ob7= std::make_unique<WorldObject>("objects/can/can.obj", glm::vec3(-5.5f, 3.0f, 15.0f), "objects/can/tex2.png");
+	ob7->id = "PIWO2";
+	ob7->M = glm::scale(ob7->M, glm::vec3(0.7f, 0.7f, 0.7f));
+	ob7->drunkenness = 1;
+	objects.push_back(std::move(ob7));
 
 	std::unique_ptr<WorldObject> pedestal7 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 15.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal7));

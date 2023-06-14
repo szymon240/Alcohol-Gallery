@@ -106,7 +106,7 @@ void Player::moveStop()
 
 void Player::wobble() {
 	int random = rand() % 150;
-	if (drunkLevel >= 90 && !wobbly) {
+	if (drunkLevel >= 20 && !wobbly) {
 		wobblyTicks = 300;
 		wobbly = true;
 	}
