@@ -173,7 +173,7 @@ void Scene::loadLevel() {
 
 
 	//DRZWI!
-	std::unique_ptr<WorldObject> doors = std::make_unique<WorldObject>("objects/craftsmanDoorClosed.obj", glm::vec3(0.0f, 2.0f, 30.0f), "objects/metal.png");
+	std::unique_ptr<WorldObject> doors = std::make_unique<WorldObject>("objects/craftsmanDoorClosed.obj", glm::vec3(0.0f, 2.0f, 30.0f), "objects/biale_drewno.png");
 	doors->M = glm::scale(doors->M, glm::vec3(1.5f, 3.0f, 1.5f));
 	objects.push_back(std::move(doors));
 	this->printPositions();
