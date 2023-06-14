@@ -71,64 +71,64 @@ void Scene::addObject(std::unique_ptr<WorldObject> ob) {
 
 void Scene::loadLevel() {
 	//BUTELKI I PIEDESTA£Y
-	std::unique_ptr<WorldObject> ob = std::make_unique<WorldObject>("objects/potion/potion.obj", glm::vec3(-5.5f, 3.5f, 3.0f), "objects/potion/potion2.png");
+	std::unique_ptr<WorldObject> ob = std::make_unique<WorldObject>("objects/potion/potion.obj", glm::vec3(-5.5f, 3.5f, 8.0f), "objects/potion/potion2.png");
 	ob->id = "Potionek prawy";
 	ob->M = glm::scale(ob->M, glm::vec3(0.7f, 0.7f, 0.7f));
 	ob->drunkenness = 5;
 	objects.push_back(std::move(ob));
 
-	std::unique_ptr<WorldObject> pedestal = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, 3.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, 8.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal));
 
-	std::unique_ptr<WorldObject> ob1 = std::make_unique<WorldObject>("objects/butelka/butelka.obj", glm::vec3(-5.5f, 3.0f, -9.0f), "objects/butelka/szklo.png");
+	std::unique_ptr<WorldObject> ob1 = std::make_unique<WorldObject>("objects/butelka/butelka.obj", glm::vec3(-5.5f, 3.0f, -7.0f), "objects/butelka/szklo.png");
 	ob1->id = "Butelka prawa";
 	ob1->M = glm::scale(ob1->M, glm::vec3(0.5f, 0.5f, 0.5f));
 	ob1->drunkenness = 3;
 	objects.push_back(std::move(ob1));
 
-	std::unique_ptr<WorldObject> pedestal1 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, -9.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal1 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, -7.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal1));
 
-	std::unique_ptr<WorldObject> ob2 = std::make_unique<WorldObject>("objects/wine/wine.obj", glm::vec3(-5.5f, 3.0f,-3.0f), "objects/wine/wino.png");
+	std::unique_ptr<WorldObject> ob2 = std::make_unique<WorldObject>("objects/wine/wine.obj", glm::vec3(-5.5f, 3.0f, 1.0f), "objects/wine/wino.png");
 	ob2->id = "Wino prawe";
 	ob2->M = glm::scale(ob2->M, glm::vec3(0.7f, 0.7f, 0.7f));
 	ob2->drunkenness = 1;
 	objects.push_back(std::move(ob2));
 	
-	std::unique_ptr<WorldObject> pedestal2 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, -3.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal2 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, 1.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal2));
 
-	std::unique_ptr<WorldObject> ob3 = std::make_unique<WorldObject>("objects/wierd_bottle/wierd2.obj", glm::vec3(5.5f, 3.5f, 3.0f), "objects/wierd_bottle/membrane.png");
+	std::unique_ptr<WorldObject> ob3 = std::make_unique<WorldObject>("objects/wierd_bottle/wierd2.obj", glm::vec3(5.5f, 3.5f, 8.0f), "objects/wierd_bottle/membrane.png");
 	ob3->id = "Potionek lewy";
 	ob3->M = glm::scale(ob3->M, glm::vec3(0.9f, 1.6f, 0.9f));
 	ob3->drunkenness = 5;
 	objects.push_back(std::move(ob3));
 
-	std::unique_ptr<WorldObject> pedestal6 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, 9.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal6 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(-5.5f, -1.0f, 15.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal6));
 
-	std::unique_ptr<WorldObject> pedestal3 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 3.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal3 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 8.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal3));
 
-	std::unique_ptr<WorldObject> ob4 = std::make_unique<WorldObject>("objects/can/can.obj", glm::vec3(5.5f, 3.0f, -9.0f), "objects/can/tex.png");
+	std::unique_ptr<WorldObject> ob4 = std::make_unique<WorldObject>("objects/can/can.obj", glm::vec3(5.5f, 3.0f, -7.0f), "objects/can/tex.png");
 	ob4->id = "PIWO";
 	ob4->M = glm::scale(ob4->M, glm::vec3(0.7f, 0.7f, 0.7f));
 	ob4->drunkenness = 1;
 	objects.push_back(std::move(ob4));
 
-	std::unique_ptr<WorldObject> pedestal4 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, -9.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal4 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, -7.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal4));
 
-	std::unique_ptr<WorldObject> ob5 = std::make_unique<WorldObject>("objects/wine/wine.obj", glm::vec3(5.5f, 3.0f,-3.0f), "objects/wine/wino_blanc.png");
+	std::unique_ptr<WorldObject> ob5 = std::make_unique<WorldObject>("objects/wine/wine.obj", glm::vec3(5.5f, 3.0f,1.0f), "objects/wine/wino_blanc.png");
 	ob5->id = "Wino biale";
 	ob5->M = glm::scale(ob5->M, glm::vec3(0.7f, 0.7f, 0.7f));
 	ob5->drunkenness = 3;
 	objects.push_back(std::move(ob5));
 
-	std::unique_ptr<WorldObject> pedestal5 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, -3.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal5 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 1.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal5));
 
-	std::unique_ptr<WorldObject> pedestal7 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 9.0f), "objects/pedestal/marmur2.png");
+	std::unique_ptr<WorldObject> pedestal7 = std::make_unique<WorldObject>("objects/pedestal/pedestal.obj", glm::vec3(5.5f, -1.0f, 15.0f), "objects/pedestal/marmur2.png");
 	objects.push_back(std::move(pedestal7));
 
 
