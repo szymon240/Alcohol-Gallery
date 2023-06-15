@@ -92,18 +92,15 @@ void drawScene(GLFWwindow* window) {
 	glm::mat4 V = glm::lookAt(player->cam->position, player->cam->position + player->cam->dir, glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 0.1f, 50.0f); //Wylicz macierz rzutowania
 
-	// Set up lights
-	const int nr_lights = 2; // Number of lights
-	glm::vec4 pointLights[nr_lights];
-	pointLights[0] = glm::vec4(0.0f, 0.0f, -16.0f,1.0f); // First light position
-	pointLights[1] = glm::vec4(0.0f, 0.0f, 16.0f,1.0f);  // Second light position
+	
 	
 
 	//Send parameters to graphics card
 	glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
-	glUniform3fv(sp->u("pointLights"), nr_lights, glm::value_ptr(pointLights[0]));
-	glUniform1i(sp->u(" active_nr_lights"), nr_lights);
+	glUniform4fv(sp->u("lp1"), 1, glm::value_ptr(glm::vec4(1, 13.5, -10, 1)));
+	glUniform4fv(sp->u("lp2"), 1, glm::value_ptr(glm::vec4(0, 13.5, 20, 1)));
+	
 	glUniform4fv(sp->u("viewerPosition"), 1, glm::value_ptr(glm::vec4(player->pos, 1.0f)));
 	scene->draw(sp);
 
