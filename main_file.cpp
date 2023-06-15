@@ -1,5 +1,4 @@
 #define GLM_FORCE_RADIANS
-#define GLM_FORCE_SWIZZLE
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -48,8 +47,6 @@ void keyCallback(
 }
 
 
-
-//Initialization code procedure
 void initOpenGLProgram(GLFWwindow* window) {
 	glClearColor(0,0,0,1);
 	glEnable(GL_DEPTH_TEST);
@@ -61,7 +58,7 @@ void initOpenGLProgram(GLFWwindow* window) {
 	player = new Player();
 }
 
-//Release resources allocated by the program
+
 void freeOpenGLProgram(GLFWwindow* window) {
 	scene->clean();
 	delete player;
@@ -72,67 +69,65 @@ void freeOpenGLProgram(GLFWwindow* window) {
 
 void drawScene(GLFWwindow* window) {
 	sp->use();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // SPRAWDZIÆ!!
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 V = glm::lookAt(player->cam->position, player->cam->position + player->cam->dir, glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
-	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 0.1f, 50.0f); //Wylicz macierz rzutowania
+	glm::mat4 V = glm::lookAt(player->cam->position, player->cam->position + player->cam->dir, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 0.1f, 50.0f);
 	
 	glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
-	glUniform4fv(sp->u("lp1"), 1, glm::value_ptr(glm::vec4(1, 13.5, -10, 1)));
+	glUniform4fv(sp->u("lp1"), 1, glm::value_ptr(glm::vec4(0, 13.5, -10, 1)));
 	glUniform4fv(sp->u("lp2"), 1, glm::value_ptr(glm::vec4(0, 13.5, 20, 1)));
 	
 	glUniform4fv(sp->u("viewerPosition"), 1, glm::value_ptr(glm::vec4(player->pos, 1.0f)));
 	scene->draw(sp);
 
-	glfwSwapBuffers(window); //Copy back buffer to front buffer
+	glfwSwapBuffers(window);
 }
 
 int main(void)
 {
 	srand(time(NULL));
-	GLFWwindow* window; //Pointer to object that represents the application window
+	GLFWwindow* window;
 
-	glfwSetErrorCallback(error_callback);//Register error processing callback procedure
+	glfwSetErrorCallback(error_callback);
 
-	if (!glfwInit()) { //Initialize GLFW library
+	if (!glfwInit()) {
 		fprintf(stderr, "Can't initialize GLFW.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(1920,1080, "OpenGL", NULL, NULL);  //Rozmiar HD (rozdzielczoœæ)   SPRAWDZIÆ NULLE!   Create a window 500pxx500px titled "OpenGL" and an OpenGL context associated with it.
+	window = glfwCreateWindow(1920,1080, "OpenGL", NULL, NULL);
 
-	if (!window) //If no window is opened then close the program
+	if (!window)
 	{
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
 
-	glfwMakeContextCurrent(window); //Since this moment OpenGL context corresponding to the window is active and all OpenGL calls will refer to this context.
-	glfwSwapInterval(1); //During vsync wait for the first refresh
+	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);
 
 	GLenum err;
-	if ((err=glewInit()) != GLEW_OK) { //Initialize GLEW library
+	if ((err=glewInit()) != GLEW_OK) {
 		fprintf(stderr, "Can't initialize GLEW: %s\n", glewGetErrorString(err));
 		exit(EXIT_FAILURE);
 	}
 
-	initOpenGLProgram(window); //Call initialization procedure
+	initOpenGLProgram(window);
 
-	//float angle_x = 0; //current rotation angle of the object, x axis
-	//float angle_y = 0; //current rotation angle of the object, y axis
 	glfwSetTime(0);
-	//Main application loop
-	while (!glfwWindowShouldClose(window)) //As long as the window shouldnt be closed yet...
+
+	while (!glfwWindowShouldClose(window))
 	{		
 		player->update(glfwGetTime());
-		glfwSetTime(0); //Zero the timer
-		drawScene(window); //Execute drawing procedure
-		glfwPollEvents();//Process callback procedures corresponding to the events that took place up to now   SPRAWDZIÆ!!
+		glfwSetTime(0);
+		drawScene(window);
+		glfwPollEvents();
 	}
 	freeOpenGLProgram(window);
 
-	glfwDestroyWindow(window); //Delete OpenGL context and the window.
-	glfwTerminate(); //Free GLFW resources
+	glfwDestroyWindow(window);
+	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }

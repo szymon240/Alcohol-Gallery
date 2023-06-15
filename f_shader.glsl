@@ -20,7 +20,7 @@ float calculateDiff(vec4 l, vec4 reflect) {
     return nl;
 }
 
-float calculateSpec(vec4 vertex, vec4 reflect,float p) {
+float calculateSpec(vec4 vertex, vec4 reflect) {
     float rv = pow(max(dot(reflect, vertex), 0.0), 50.0);
     return rv;
 }
@@ -44,8 +44,8 @@ void main(void) {
     vec4 diff = texColor * (diffuse1 + diffuse2);
     vec4 ambient = ambientLightColor * texColor;
         
-    float specular1 = calculateSpec(mv, mr1,25.0);
-    float specular2 = calculateSpec(mv, mr2,25.0);
+    float specular1 = calculateSpec(mv, mr1);
+    float specular2 = calculateSpec(mv, mr2);
     spec = vec4(specular1 + specular2);
        // Final pixel color calculation with ambient light
     pixelColor = clamp(diff + spec + ambient , 0.0, 1.0);

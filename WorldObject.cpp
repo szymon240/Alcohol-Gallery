@@ -120,12 +120,7 @@ void WorldObject::draw(ShaderProgram* sp) {
 	glUniform1i(sp->u("textureMap0"), 0); // Set the texture unit index to 0
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
-
-	
-	glUniform1i(sp->u("type"), 0);
-		
-	
+	glBindTexture(GL_TEXTURE_2D, tex);	
 
 	glDrawArrays(GL_TRIANGLES, 0, vertCount);
 
