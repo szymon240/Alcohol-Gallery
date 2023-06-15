@@ -9,7 +9,7 @@ in vec4 l1;
 in vec4 l2;
 in vec4 v;
 
-uniform int type = 0;
+
 uniform sampler2D textureMap1;
 uniform sampler2D textureMap0;
 uniform vec4 ambientLightColor = vec4(0.2, 0.2, 0.2, 0.2);
@@ -43,22 +43,11 @@ void main(void) {
 
     vec4 diff = texColor * (diffuse1 + diffuse2);
     vec4 ambient = ambientLightColor * texColor;
-    
-    if(type ==2){
-        vec4 ks = texture(textureMap1, iTexCoord0);
-        float specular1 = calculateSpec(mv, mr1,50.0);
-        float specular2 = calculateSpec(mv, mr2,50.0);    
-        spec = vec4(ks.rgb*(specular1 + specular2),0);
-        // Final pixel color calculation with ambient light
-    pixelColor = clamp(diff + spec +ambient, 0.0, 1.0);
-    }
-    else {
-       float specular1 = calculateSpec(mv, mr1,25.0);
-       float specular2 = calculateSpec(mv, mr2,25.0);
-       spec = vec4(specular1 + specular2);
+        
+    float specular1 = calculateSpec(mv, mr1,25.0);
+    float specular2 = calculateSpec(mv, mr2,25.0);
+    spec = vec4(specular1 + specular2);
        // Final pixel color calculation with ambient light
     pixelColor = clamp(diff + spec + ambient , 0.0, 1.0);
-    //}else{
-     //   pixelColor = clamp(diff+ambient, 0.0, 1.0);
-    }   
+    
 }

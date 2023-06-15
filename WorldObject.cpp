@@ -78,7 +78,6 @@ WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* te
 	loadModel(path);
 	M = glm::mat4(1.0f);
 	position = glm::vec3(0.0f, 0.0f, 0.0f);
-	//M = glm::translate(M, startingPos);
 	this->move(startingPos);
 	tex = readTexture(texPath);
 	type = 0;
@@ -89,16 +88,9 @@ WorldObject::WorldObject(const char* path, glm::vec3 startingPos, const char* te
 	loadModel(path);
 	M = glm::mat4(1.0f);
 	position = glm::vec3(0.0f, 0.0f, 0.0f);
-	//M = glm::translate(M, startingPos);
 	this->move(startingPos);
 	tex = readTexture(texPath);
 	this->type = type;
-	if (type == FLOOR) {
-		texNormal = readTexture("objects/Wood_spec.png");
-	}
-	else {
-		texNormal = NULL;
-	}
 	//this->checkAttributes();
 }
 
@@ -131,24 +123,10 @@ void WorldObject::draw(ShaderProgram* sp) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 
-	switch (type){
-	case FLAT:
-		glUniform1i(sp->u("type"), 0);
-		break;
-	case SHINE:
-		glUniform1i(sp->u("type"), 1);
-		break;
-	case FLOOR:
-
-		glUniform1i(sp->u("type"), 2);
-		glUniform1i(sp->u("textureMap1"), 1); // Set the texture unit index to 0
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texNormal);
-
+	
+	glUniform1i(sp->u("type"), 0);
 		
-		break;
-	}
+	
 
 	glDrawArrays(GL_TRIANGLES, 0, vertCount);
 

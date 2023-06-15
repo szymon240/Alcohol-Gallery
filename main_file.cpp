@@ -11,8 +11,6 @@
 #include "constants.h"
 #include "lodepng.h"
 #include "shaderprogram.h"
-//#include "myCube.h"
-
 #include "WorldObject.h"
 #include <iostream>
 #include "Camera.h"
@@ -23,14 +21,6 @@ ShaderProgram* sp;
 Scene * scene;
 Player* player;
 
-//glm::vec3 pos = glm::vec3(0, 1, -5);
-//glm::vec3 dir = glm::vec3(0, 0, 1);
-
-
-//float speed_x = 0; //angular speed in radians
-//float speed_y = 0; //angular speed in radians
-//float ws = 0;
-//Error processing callback procedure
 void error_callback(int error, const char* description) {
 	fputs(description, stderr);
 }
@@ -45,8 +35,6 @@ void keyCallback(
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_LEFT) player->left(player);
 		if (key == GLFW_KEY_RIGHT) player->right(player);
-		//if (key == GLFW_KEY_PAGE_UP) cam->speed_x = 1;
-		//if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -1;
 		if (key == GLFW_KEY_UP) player->forward(player);
 		if (key == GLFW_KEY_DOWN) player->back(player);
 		if (key == GLFW_KEY_SPACE) scene->printObjectID(player);
@@ -56,12 +44,9 @@ void keyCallback(
 		if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_LEFT)player->turnStop();
 
 		if (key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) player->moveStop();
-
-		//if (key == GLFW_KEY_PAGE_UP) cam->speed_x = 0;
-		//if (key == GLFW_KEY_PAGE_DOWN) cam->speed_x = -0;
 	}
 }
-//Pro
+
 
 
 //Initialization code procedure
@@ -69,9 +54,9 @@ void initOpenGLProgram(GLFWwindow* window) {
 	glClearColor(0,0,0,1);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetKeyCallback(window,keyCallback);
-	//glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
+	
 	sp = new ShaderProgram("v_shader.glsl", NULL, "f_shader.glsl");
-	scene = new Scene("alley");
+	scene = new Scene("Gallery");
 	scene->loadLevel();
 	player = new Player();
 }
@@ -91,11 +76,7 @@ void drawScene(GLFWwindow* window) {
 
 	glm::mat4 V = glm::lookAt(player->cam->position, player->cam->position + player->cam->dir, glm::vec3(0.0f, 1.0f, 0.0f)); //Wylicz macierz widoku
 	glm::mat4 P = glm::perspective(glm::radians(50.0f), 1.0f, 0.1f, 50.0f); //Wylicz macierz rzutowania
-
 	
-	
-
-	//Send parameters to graphics card
 	glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
 	glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
 	glUniform4fv(sp->u("lp1"), 1, glm::value_ptr(glm::vec4(1, 13.5, -10, 1)));
@@ -119,7 +100,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(1920, 720*2, "OpenGL", NULL, NULL);  //Rozmiar HD (rozdzielczoœæ)   SPRAWDZIÆ NULLE!   Create a window 500pxx500px titled "OpenGL" and an OpenGL context associated with it.
+	window = glfwCreateWindow(1920,1080, "OpenGL", NULL, NULL);  //Rozmiar HD (rozdzielczoœæ)   SPRAWDZIÆ NULLE!   Create a window 500pxx500px titled "OpenGL" and an OpenGL context associated with it.
 
 	if (!window) //If no window is opened then close the program
 	{
@@ -143,8 +124,7 @@ int main(void)
 	glfwSetTime(0);
 	//Main application loop
 	while (!glfwWindowShouldClose(window)) //As long as the window shouldnt be closed yet...
-	{
-		
+	{		
 		player->update(glfwGetTime());
 		glfwSetTime(0); //Zero the timer
 		drawScene(window); //Execute drawing procedure
