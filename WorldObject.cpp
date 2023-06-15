@@ -1,7 +1,6 @@
 #include "WorldObject.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
-#include "myCube.h"
 #include<iostream>
 #include <cmath>
 
