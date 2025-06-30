@@ -41,7 +41,6 @@ Player::Player()
 	isDrinking = false;
 	wobbly = false;
 	wobblyTicks = 0;
-	wobbleHorizontal = 0.05;
 }
 
 void Player::left(Player* player)
@@ -52,7 +51,6 @@ void Player::left(Player* player)
 	} else {
 			cam->speed_y = -1*turnSpeed;
 	}
-	//upAndDown(player, true);
 }
 
 void Player::turnStop()
@@ -70,7 +68,6 @@ void Player::right(Player* player)
 	else {
 			cam->speed_y = turnSpeed;
 	}
-	//upAndDown(player, true);
 }
 
 void Player::forward(Player* player)
@@ -82,7 +79,6 @@ void Player::forward(Player* player)
 	else {
 		this->ws = -1 * this->goSpeed;
 	}
-	//upAndDown(player, true);
 }
 
 void Player::back(Player* player)
@@ -95,7 +91,6 @@ void Player::back(Player* player)
 	else {
 		this->ws = 1 * this->goSpeed;
 	}
-	//upAndDown(player, true);
 }
 
 void Player::moveStop()
@@ -105,22 +100,19 @@ void Player::moveStop()
 
 
 void Player::wobble() {
-	int random = rand() % 150;
 	if (drunkLevel >= 20 && !wobbly) {
 		wobblyTicks = 300;
 		wobbly = true;
 	}
 	if (wobblyTicks > 150) {
 		cam->speed_x = 0.03;
-		if (drunkLevel > 100) cam->speed_y += wobbleHorizontal;
 		
 		wobblyTicks--;
 	}
 	else if (wobblyTicks > 0) {
 		cam->speed_x = -0.03;
 		wobblyTicks--;
-		if(drunkLevel > 100)cam->speed_y -= wobbleHorizontal;
-		if (wobblyTicks == 0) { wobbly = false; wobbleHorizontal *-1; }
+		if (wobblyTicks == 0) { wobbly = false; }
 	}
 }
 

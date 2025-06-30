@@ -42,6 +42,7 @@ void Scene::moveBottle(int i, Player* player) {
 	
 	objects[i]->M = glm::rotate(objects[i]->M, PI / 4, rotateVector);
 	objects[i]->M = glm::translate(objects[i]->M, glm::vec3(0.0f, 0.5f, 0.0f));
+
 	// Start a new thread to reverse the rotation after a delay
 	std::thread reverseThread([this, i, player,rotateVector]() {
 		std::this_thread::sleep_for(std::chrono::seconds(1));  
@@ -109,7 +110,6 @@ void Scene::loadLevel() {
 
 	std::unique_ptr<WorldObject> ob6 = std::make_unique<WorldObject>("objects/whiskey/bombai.obj", glm::vec3(5.5f, 3.2f, 15.0f), "objects/whiskey/tex.png");
 	ob6->id = "bOMBAI";
-	//ob6->M = glm::scale(ob6->M, glm::vec3(0.7f, 0.7f, 0.7f));
 	ob6->drunkenness = 3;
 	objects.push_back(std::move(ob6));
 
