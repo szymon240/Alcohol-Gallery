@@ -1,5 +1,4 @@
 #define GLM_FORCE_RADIANS
-#define GLM_FORCE_SWIZZLE
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

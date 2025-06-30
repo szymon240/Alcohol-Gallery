@@ -48,6 +48,6 @@ void main(void) {
     float specular2 = calculateSpec(mv, mr2,25.0);
     spec = vec4(specular1 + specular2);
        // Final pixel color calculation with ambient light
-    pixelColor = clamp(diff + spec + ambient , 0.0, 1.0);
+    pixelColor = diff + spec + ambient;
     
 }
